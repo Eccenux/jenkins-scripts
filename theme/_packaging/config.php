@@ -21,7 +21,7 @@ $buildPackages = array(
 	// JS
 	// - - - - - - - - - - - - - - - - - - - - -
 	'theme' => array(
-		'srcBase' => 'js/',
+		'srcBase' => 'nux-js/',
 		'packages' => array(
 			// application build (common including i18n and model)
 			'common' => array(
