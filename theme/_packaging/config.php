@@ -21,14 +21,15 @@ $buildPackages = array(
 	// JS
 	// - - - - - - - - - - - - - - - - - - - - -
 	'theme' => array(
-		'srcBase' => 'nux-js/',
+		'srcBase' => '',
 		'packages' => array(
 			// application build (common including i18n and model)
 			'common' => array(
 				'debug' => true,	// unpack in browser by default
 				'dest' => 'theme.js',
 				'src' => array(
-					'*', // note `*` means all JS files (does not include subdirs)
+					'nux-js/*', // note `*` means all JS files (does not include subdirs)
+					'editarea/*',
 				),
 			),
 		),

@@ -18,6 +18,11 @@
 	$oFileHelper = new FileHelper($strBaseScriptDir);
 
 	//==========================================
+	// Copy files
+	//==========================================
+	$oFileHelper->copy('editarea/lib', $strBundleRoot.'editarea');
+
+	//==========================================
 	// JS
 	//==========================================
 
