@@ -250,3 +250,71 @@
 })();
 
 // parameter-grouping.js, EOF
+// jenkins-init.js, line#0
+/**
+ * Init EditArea for each shell textarea.
+ *
+ * @author Maciej "Nux" Jaros
+ * Licensed under (at ones choosing)
+ * <li>MIT License: http:
+ * <li>or CC-BY: http:
+ */
+(function(){
+	var jenkinsThemeBaseUrl = "/jenkins-theme/";	// YMMV - set this to whatever your "theme" files are
+
+	if (!('querySelectorAll' in document)) {
+		console.warn('[EditAreaInit] Browser not supported!');
+		return;
+	}
+	loadScript(jenkinsThemeBaseUrl + 'editarea/edit_area_full.js', initAreas);
+// EOC
+	function loadScript(url, onLoad) {
+		var script = document.createElement('script');
+		var head = document.getElementsByTagName('head')[0];
+		script.setAttribute('src', url);
+		head.appendChild(script);
+
+		var intervaId = setInterval(function(){
+			if (typeof(editAreaLoader) != 'undefined') {
+				clearInterval(intervaId);
+
+				setTimeout(function(){
+					onLoad();
+				}, 100);
+			}
+		}, 200);
+	}
+// EOC
+	function initAreas() {
+		var userLanguage = navigator.language;
+// EOC
+		var enhanceUs = document.querySelectorAll(
+			'textarea[name="_.execCommand"].ssh-exec-control'
+			+ ',div[descriptorid="hudson.tasks.Shell"] textarea[name="command"]'
+		);
+		for (var i=0; i < enhanceUs.length; i++) {
+			var textarea = enhanceUs[i];
+			if (textarea.id.length < 1) {
+				textarea.id = "enhanceUs_" + i;
+			}
+
+			editAreaLoader.init({
+				id: textarea.id
+				,start_highlight: false
+				,allow_resize: "both"
+				,allow_toggle: true
+				,word_wrap: true
+				,min_width: 600
+				,min_height: 300
+				,language: userLanguage
+				,syntax: "bash"
+				,change_callback:'editAreaJenkinsAutoUpdate'
+			});
+		}
+	}
+// EOC
+	window.editAreaJenkinsAutoUpdate = function (tid) {
+		document.getElementById(tid).value = editAreaLoader.getValue(tid);
+	};
+})();
+// jenkins-init.js, EOF
