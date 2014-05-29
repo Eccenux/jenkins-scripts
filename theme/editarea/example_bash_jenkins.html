@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Jenkins loader test</title>
+	<script>
+	(function(){
+		var script = document.createElement('script');
+		var head = document.getElementsByTagName('head')[0];
+		script.setAttribute('src', 'lib/edit_area_full.js');
+		head.appendChild(script);
+		// wait for the script to load
+		var intervaId = setInterval(function(){
+			if (typeof(editAreaLoader) != 'undefined') {
+				clearInterval(intervaId);
+				// wait just a bit more just in case...
+				setTimeout(function(){
+					initAreas();
+				}, 100);
+			}
+		}, 200);
+		// function to run when script was loaded
+		window.editAreaJenkinsAutoUpdate = function (tid) {
+			console.log('change happened', tid);
+			console.log(document.getElementById(tid).value);
+			document.getElementById(tid).value = editAreaLoader.getValue(tid);
+		};
+		function initAreas() {
+			var userLanguage = navigator.language;
+			var enhanceUs = document.getElementsByTagName('textarea');
+			for (var i=0; i < enhanceUs.length; i++) {
+				var textarea = enhanceUs[i];
+				if (textarea.id.length < 1) {
+					textarea.id = "enhanceUs_" + i;
+				}
+				// initialisation
+				editAreaLoader.init({
+					id: textarea.id
+					,start_highlight: true
+					,allow_resize: "both"
+					,allow_toggle: true
+					,word_wrap: true
+					,min_width: 600
+					,min_height: 300
+					,language: userLanguage
+					,syntax: "bash"
+					,change_callback:'editAreaJenkinsAutoUpdate'
+				});
+			}
+		}
+	})();
+	</script>
+</head>
+<body>
+<h2>EditArea bash examples</h2>
+<form action='' method='post'>
+	<fieldset>
+		<legend>Example 1</legend>
+		<p>Test in English with php syntax, highlighted, toggle enabled, word-wrap enabled, resize enabled and default toolbar. Also offer the possibility to switch on/off the readonly mode.</p>
+		<textarea id="example_1" style="height: 350px; width: 100%;" name="test_1">
+repoUrl=https://github.com/Eccenux/jenkins-scripts.git
+repoName=jenkins-scripts
+
+# first pull (clone)
+if [ ! -d "./$repoName" ]; then
+	git clone $repoUrl
+# update
+else
+	cd $repoName
+	git pull
+fi
+
+cp jenkins-scripts/theme/_build/theme.js /usr/share/apache-tomcat/webapps/jenkins-theme/theme.js
+</textarea>
+
+		<textarea>
+repoUrl=https://github.com/Eccenux/jenkins-scripts.git
+repoName=jenkins-scripts
+
+# first pull (clone)
+if [ ! -d "./$repoName" ]; then
+	git clone $repoUrl
+# update
+else
+	cd $repoName
+	git pull
+fi
+
+cp jenkins-scripts/theme/_build/theme.js /usr/share/apache-tomcat/webapps/jenkins-theme/theme.js
+</textarea>
+	</fieldset>
+</form>
+</body>
+</html>

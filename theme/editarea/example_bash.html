@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" >
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>EditArea - the code editor in a textarea</title>
+	<script language="Javascript" type="text/javascript" src="lib/edit_area_full.js"></script>
+	<script language="Javascript" type="text/javascript">
+		// initialisation
+		editAreaLoader.init({
+			id: "example_1"	// id of the textarea to transform		
+			,start_highlight: true	// if start with highlight
+			,allow_resize: "both"
+			,allow_toggle: true
+			,word_wrap: true
+			,language: "en"
+			,syntax: "bash"	
+		});
+	</script>
+</head>
+<body>
+<h2>EditArea bash examples</h2>
+<form action='' method='post'>
+	<fieldset>
+		<legend>Example 1</legend>
+		<p>Test in English with php syntax, highlighted, toggle enabled, word-wrap enabled, resize enabled and default toolbar. Also offer the possibility to switch on/off the readonly mode.</p>
+		<textarea id="example_1" style="height: 350px; width: 100%;" name="test_1">
+repoUrl=https://github.com/Eccenux/jenkins-scripts.git
+repoName=jenkins-scripts
+
+# first pull (clone)
+if [ ! -d "./$repoName" ]; then
+	git clone $repoUrl
+# update
+else
+	cd $repoName
+	git pull
+fi
+
+cp jenkins-scripts/theme/_build/theme.js /usr/share/apache-tomcat/webapps/jenkins-theme/theme.js
+</textarea>
+	</fieldset>
+</form>
+</body>
+</html>
