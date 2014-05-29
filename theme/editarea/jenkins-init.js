@@ -60,9 +60,10 @@
 			// initialisation
 			editAreaLoader.init({
 				id: textarea.id
-				,start_highlight: false
+				,start_highlight: true
 				,allow_resize: "both"
 				,allow_toggle: true
+				,display: "later"	// do not start with the editor
 				,word_wrap: true
 				,min_width: 600
 				,min_height: 300
