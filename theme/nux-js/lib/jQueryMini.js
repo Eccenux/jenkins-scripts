@@ -15,11 +15,11 @@
 function jQueryMini(parameter){
 	// onready function
 	if (typeof(parameter) == 'function') {
-		this.addReadyListener(parameter);
+		jQueryMini.addReadyListener(parameter);
 	}
 	// selector traversing
 	else {
-		return this.traverseSelector(parameter);
+		return jQueryMini.traverseSelector(parameter);
 	}
 }
 

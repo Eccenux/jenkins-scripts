@@ -17,11 +17,11 @@
 function jQueryMini(parameter){
 
 	if (typeof(parameter) == 'function') {
-		this.addReadyListener(parameter);
+		jQueryMini.addReadyListener(parameter);
 	}
 
 	else {
-		return this.traverseSelector(parameter);
+		return jQueryMini.traverseSelector(parameter);
 	}
 }
 // EOC
