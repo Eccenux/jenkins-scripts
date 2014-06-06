@@ -29,7 +29,7 @@ function jQueryMini(parameter){
  * @param {String} selector CSS-like selector of elements.
  * @returns {NodeList|jQueryMini.prototype.traverseSelector.elements}
  */
-jQueryMini.prototype.traverseSelector = function(selector) {
+jQueryMini.traverseSelector = function(selector) {
 	var elements = document.querySelectorAll(selector);
 	elements.each = function(elementFunction) {
 		for (var i = 0; i < elements.length; i++) {
@@ -49,7 +49,7 @@ jQueryMini.prototype.traverseSelector = function(selector) {
  *		Function to run when page elements are ready.
  *		Will receive event object.
  */
-jQueryMini.prototype.addReadyListener = function(onReady) {
+jQueryMini.addReadyListener = function(onReady) {
 	document.addEventListener("DOMContentLoaded", function(event) {
 		onReady(event);
 	});
@@ -65,7 +65,7 @@ jQueryMini.prototype.addReadyListener = function(onReady) {
  *		Function to run when page elements are ready.
  *		Will receive event object.
  */
-jQueryMini.prototype.on = function(eventName, onEvent) {
+jQueryMini.on = function(eventName, onEvent) {
 	document.addEventListener(eventName, function(event) {
 		onEvent.call(this, event);
 	});

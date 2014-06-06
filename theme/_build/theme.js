@@ -25,7 +25,7 @@ function jQueryMini(parameter){
 	}
 }
 // EOC
-jQueryMini.prototype.traverseSelector = function(selector) {
+jQueryMini.traverseSelector = function(selector) {
 	var elements = document.querySelectorAll(selector);
 	elements.each = function(elementFunction) {
 		for (var i = 0; i < elements.length; i++) {
@@ -36,13 +36,13 @@ jQueryMini.prototype.traverseSelector = function(selector) {
 	return elements;
 };
 // EOC
-jQueryMini.prototype.addReadyListener = function(onReady) {
+jQueryMini.addReadyListener = function(onReady) {
 	document.addEventListener("DOMContentLoaded", function(event) {
 		onReady(event);
 	});
 };
 // EOC
-jQueryMini.prototype.on = function(eventName, onEvent) {
+jQueryMini.on = function(eventName, onEvent) {
 	document.addEventListener(eventName, function(event) {
 		onEvent.call(this, event);
 	});
