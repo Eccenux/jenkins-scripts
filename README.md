@@ -7,6 +7,11 @@ The `theme` folder contains simple `_packaging` script that builds `theme.js` fo
 
 Below is a description of most important enhancement scripts.
 
+ViewFilter
+----------
+
+Adds a simple filter input for views. Allows quick job filtering searching by words in any order. Technically it simply hides unmatched rows.
+
 EditArea
 --------
 
