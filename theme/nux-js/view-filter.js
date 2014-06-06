@@ -1,4 +1,4 @@
-(function(){
+(function($){
 
 /**
  * Adds a simple filter input for views.
@@ -11,10 +11,10 @@
  * <li>MIT License: http://www.opensource.org/licenses/mit-license
  * <li>or CC-BY: http://creativecommons.org/licenses/by/3.0/
  *
- * @param {jQueryMini} $ Actual jQuery or jQuery mini.
+ * @requires jQueryMini or Actual jQuery.
  * @returns {ViewFilter}
  */
-function ViewFilter($)
+function ViewFilter()
 {
 	/**
 	 * @type ViewFilter
@@ -34,7 +34,7 @@ function ViewFilter($)
 		var input = document.createElement("input");
 		input.setAttribute("type", "text");
 		input.setAttribute("placeholder", document.getElementById("search-box").getAttribute("placeholder")); // i18n :-)
-		input.on('keyup', function() {
+		$.on(input, 'keyup', function() {
 			_self.filter(this.value);
 		});
 		document.getElementById("view-message").appendChild(input);

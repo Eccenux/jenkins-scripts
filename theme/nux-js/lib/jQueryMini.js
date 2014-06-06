@@ -60,13 +60,14 @@ jQueryMini.addReadyListener = function(onReady) {
  *
  * Support: http://caniuse.com/#feat=domcontentloaded
  *
+ * @param {Node} element Element (or node) to bind the event to.
  * @param {String} eventName Name of event to hook to (note, use "click" rather then "onclick").
  * @param {Function} onEvent
  *		Function to run when page elements are ready.
  *		Will receive event object.
  */
-jQueryMini.on = function(eventName, onEvent) {
-	document.addEventListener(eventName, function(event) {
+jQueryMini.on = function(element, eventName, onEvent) {
+	element.addEventListener(eventName, function(event) {
 		onEvent.call(this, event);
 	});
 };

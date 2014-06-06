@@ -42,8 +42,8 @@ jQueryMini.addReadyListener = function(onReady) {
 	});
 };
 // EOC
-jQueryMini.on = function(eventName, onEvent) {
-	document.addEventListener(eventName, function(event) {
+jQueryMini.on = function(element, eventName, onEvent) {
+	element.addEventListener(eventName, function(event) {
 		onEvent.call(this, event);
 	});
 };
@@ -289,7 +289,7 @@ jQueryMini.on = function(eventName, onEvent) {
 
 // parameter-grouping.js, EOF
 // view-filter.js, line#0
-(function(){
+(function($){
 
 /**
  * Adds a simple filter input for views.
@@ -302,10 +302,10 @@ jQueryMini.on = function(eventName, onEvent) {
  * <li>MIT License: http:
  * <li>or CC-BY: http:
  *
- * @param {jQueryMini} $ Actual jQuery or jQuery mini.
+ * @requires jQueryMini or Actual jQuery.
  * @returns {ViewFilter}
  */
-function ViewFilter($)
+function ViewFilter()
 {
 // EOC
 	var _self = this;
@@ -320,7 +320,7 @@ function ViewFilter($)
 		var input = document.createElement("input");
 		input.setAttribute("type", "text");
 		input.setAttribute("placeholder", document.getElementById("search-box").getAttribute("placeholder"));
-		input.on('keyup', function() {
+		$.on(input, 'keyup', function() {
 			_self.filter(this.value);
 		});
 		document.getElementById("view-message").appendChild(input);
