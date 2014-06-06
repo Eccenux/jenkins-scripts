@@ -1,25 +1,72 @@
 /**
  *	jQuery mini
  *
- *	This implments most used feature of jQuery i.e. selecting and traversing a list of elements.
+ *	This implments most used feature of jQuery i.e. selecting and traversing a list of elements and onready function.
  *
- *	Yes, it ignores existance of old IE. Currently supports IE8, but will drop it without notice.
+ *	Yes, it ignores existance of old IE. Currently supports IE9 and higher.
  *
- *	@param {String} selector CSS-like selecotr of elements.
+ *	@param {String|Function} parameter CSS-like selector of elements OR function to run when page elements are ready.
  *
  *	@author Maciej "Nux" Jaros
  *	Licensed under (at ones choosing)
  *	<li>MIT License: http://www.opensource.org/licenses/mit-license
  *	<li>or CC-BY: http://creativecommons.org/licenses/by/3.0/
  */
-function jQueryMini(selector){
-	var elements = document.querySelectorAll(selector);
-	return new function() {
-		this.each = function(elementFunction) {
-			for (var i = 0; i < elements.length; i++) {
-				var el = elements[i];
-				elementFunction.call(el);
-			}
-		};
-	};
+function jQueryMini(parameter){
+	// onready function
+	if (typeof(parameter) == 'function') {
+		this.addReadyListener(parameter);
+	}
+	// selector traversing
+	else {
+		return this.traverseSelector(parameter);
+	}
 }
+
+/**
+ * Selector traversing with `each` method.
+ *
+ * @param {String} selector CSS-like selector of elements.
+ * @returns {NodeList|jQueryMini.prototype.traverseSelector.elements}
+ */
+jQueryMini.prototype.traverseSelector = function(selector) {
+	var elements = document.querySelectorAll(selector);
+	elements.each = function(elementFunction) {
+		for (var i = 0; i < elements.length; i++) {
+			var el = elements[i];
+			elementFunction.call(el);
+		}
+	};
+	return elements;
+};
+
+/**
+ * Append onReady listener.
+ *
+ * Support: http://caniuse.com/#feat=domcontentloaded
+ *
+ * @param {Function} onReady
+ *		Function to run when page elements are ready.
+ *		Will receive event object.
+ */
+jQueryMini.prototype.addReadyListener = function(onReady) {
+	document.addEventListener("DOMContentLoaded", function(event) {
+		onReady(event);
+	});
+};
+
+/**
+ * Append listener.
+ *
+ * Support: http://caniuse.com/#feat=domcontentloaded
+ *
+ * @param {String} eventName Name of event to hook to (note, use "click" rather then "onclick").
+ * @param {Function} onEvent
+ *		Function to run when page elements are ready.
+ *		Will receive event object.
+ */
+jQueryMini.prototype.on = function(eventName, onEvent) {
+	document.addEventListener(eventName, function(event) {
+		onEvent.call(this, event);
+	});
+};

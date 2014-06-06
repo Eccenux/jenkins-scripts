@@ -3,28 +3,51 @@
 /**
  *	jQuery mini
  *
- *	This implments most used feature of jQuery i.e. selecting and traversing a list of elements.
+ *	This implments most used feature of jQuery i.e. selecting and traversing a list of elements and onready function.
  *
- *	Yes, it ignores existance of old IE. Currently supports IE8, but will drop it without notice.
+ *	Yes, it ignores existance of old IE. Currently supports IE9 and higher.
  *
- *	@param {String} selector CSS-like selecotr of elements.
+ *	@param {String|Function} parameter CSS-like selector of elements OR function to run when page elements are ready.
  *
  *	@author Maciej "Nux" Jaros
  *	Licensed under (at ones choosing)
  *	<li>MIT License: http:
  *	<li>or CC-BY: http:
  */
-function jQueryMini(selector){
-	var elements = document.querySelectorAll(selector);
-	return new function() {
-		this.each = function(elementFunction) {
-			for (var i = 0; i < elements.length; i++) {
-				var el = elements[i];
-				elementFunction.call(el);
-			}
-		};
-	};
+function jQueryMini(parameter){
+
+	if (typeof(parameter) == 'function') {
+		this.addReadyListener(parameter);
+	}
+
+	else {
+		return this.traverseSelector(parameter);
+	}
 }
+// EOC
+jQueryMini.prototype.traverseSelector = function(selector) {
+	var elements = document.querySelectorAll(selector);
+	elements.each = function(elementFunction) {
+		for (var i = 0; i < elements.length; i++) {
+			var el = elements[i];
+			elementFunction.call(el);
+		}
+	};
+	return elements;
+};
+// EOC
+jQueryMini.prototype.addReadyListener = function(onReady) {
+	document.addEventListener("DOMContentLoaded", function(event) {
+		onReady(event);
+	});
+};
+// EOC
+jQueryMini.prototype.on = function(eventName, onEvent) {
+	document.addEventListener(eventName, function(event) {
+		onEvent.call(this, event);
+	});
+};
+
 // jQueryMini.js, EOF
 // minor-fixes.js, line#0
 /**
@@ -265,6 +288,99 @@ function jQueryMini(selector){
 })();
 
 // parameter-grouping.js, EOF
+// view-filter.js, line#0
+(function(){
+
+/**
+ * Adds a simple filter input for views.
+ *
+ * $('head').append('<script src="http://localhost/_test/jenkins/nux-js/view-filter.js" />')
+ *
+ * @author Maciej "Nux" Jaros
+ *
+ * Licensed under (at ones choosing)
+ * <li>MIT License: http:
+ * <li>or CC-BY: http:
+ *
+ * @param {jQueryMini} $ Actual jQuery or jQuery mini.
+ * @returns {ViewFilter}
+ */
+function ViewFilter($)
+{
+// EOC
+	var _self = this;
+
+	var items = [];
+// EOC
+	this.init = function () {
+
+		items = $('#projectstatus [id^=job_]');
+
+
+		var input = document.createElement("input");
+		input.setAttribute("type", "text");
+		input.setAttribute("placeholder", document.getElementById("search-box").getAttribute("placeholder"));
+		input.on('keyup', function() {
+			_self.filter(this.value);
+		});
+		document.getElementById("view-message").appendChild(input);
+	};
+// EOC
+	this.filter = function (phrase) {
+
+		var words = phrase
+				.replace(/^\s+/, '')
+				.replace(/\s+$/, '')
+				.replace(/\s+/g, ' ')
+				.split(' ')
+		;
+
+		var re = new ReArray(words, 'i');
+		//var re = new RegExp('('+words+')', 'i');
+		for (var i = 0; i < items.length; i++) {
+			var item = items[i];
+			if (re.test(item.textContent)) {
+				item.style.display='';
+			} else {
+				item.style.display='none';
+			}
+		}
+	};
+// EOC
+	function ReArray(strings, regExpFlags) {
+		this._reArray = [];
+
+		for (var i=0; i<strings.length; i++) {
+			this._reArray.push(new RegExp(this.escapeStr4RegExp(strings[i]), regExpFlags));
+		}
+	}
+// EOC
+	ReArray.prototype.escapeStr4RegExp = function(str) {
+		return str.replace(/([\[\]\{\}\|\.\*\?\(\)\$\^\\])/g, '\\$1');
+	};
+// EOC
+	ReArray.prototype.test = function(str, matchAny) {
+		var numMatches = 0;
+		for (var i=0; i<this._reArray.length; i++) {
+			var re = this._reArray[i];
+			if (re.test(str)) {
+				if (matchAny) {
+					return true;
+				} else {
+					numMatches++;
+				}
+			}
+		}
+		return (numMatches == this._reArray.length);
+	};
+}
+
+ViewFilter = new ViewFilter();
+
+$(function(){ViewFilter.init()});
+
+})(jQueryMini);
+// view-filter.js, EOF
 // jenkins-init.js, line#0
 /**
  * Init EditArea for each shell textarea.
