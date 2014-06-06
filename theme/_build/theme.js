@@ -1,4 +1,31 @@
 
+// jQueryMini.js, line#0
+/**
+ *	jQuery mini
+ *
+ *	This implments most used feature of jQuery i.e. selecting and traversing a list of elements.
+ *
+ *	Yes, it ignores existance of old IE. Currently supports IE8, but will drop it without notice.
+ *
+ *	@param {String} selector CSS-like selecotr of elements.
+ *
+ *	@author Maciej "Nux" Jaros
+ *	Licensed under (at ones choosing)
+ *	<li>MIT License: http:
+ *	<li>or CC-BY: http:
+ */
+function jQueryMini(selector){
+	var elements = document.querySelectorAll(selector);
+	return new function() {
+		this.each = function(elementFunction) {
+			for (var i = 0; i < elements.length; i++) {
+				var el = elements[i];
+				elementFunction.call(el);
+			}
+		};
+	};
+}
+// jQueryMini.js, EOF
 // minor-fixes.js, line#0
 /**
 	Various small fixes/changes.
@@ -8,22 +35,10 @@
 	<li>MIT License: http:
 	<li>or CC-BY: http:
 */
-(function () {
+(function ($) {
 
 	var controller = new Controller();
 	controller.init();
-// EOC
-	function $(selector){
-		var elements = document.querySelectorAll(selector);
-		return new function() {
-			this.each = function(elementFunction) {
-				for (var i = 0; i < elements.length; i++) {
-					var el = elements[i];
-					elementFunction.call(el);
-				}
-			}
-		}
-	}
 // EOC
 	function fixCategoryViews() {
 
@@ -50,7 +65,7 @@
 		};
 	}
 
-})();
+})(jQueryMini);
 // minor-fixes.js, EOF
 // parameter-grouping.js, line#0
 /**

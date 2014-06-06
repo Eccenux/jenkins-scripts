@@ -6,26 +6,10 @@
 	<li>MIT License: http://www.opensource.org/licenses/mit-license
 	<li>or CC-BY: http://creativecommons.org/licenses/by/3.0/
 */
-(function () {
+(function ($) {
 
 	var controller = new Controller();
 	controller.init();
-	
-	/**
-		Mini jQuery.
-		IE8+
-	*/
-	function $(selector){
-		var elements = document.querySelectorAll(selector);
-		return new function() {
-			this.each = function(elementFunction) {
-				for (var i = 0; i < elements.length; i++) {
-					var el = elements[i];
-					elementFunction.call(el);
-				}
-			}
-		}
-	}
 	
 	/**
 		Links in groupped view is incorret in that all links are relative to current URL (and not some job).
@@ -60,4 +44,4 @@
 		};
 	}
 
-})();
+})(jQueryMini);

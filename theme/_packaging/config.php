@@ -28,7 +28,9 @@ $buildPackages = array(
 				'debug' => true,	// unpack in browser by default
 				'dest' => 'theme.js',
 				'src' => array(
-					'nux-js/*', // note `*` means all JS files (does not include subdirs)
+					// note `*` means all immediate JS files (does not include subdirs)
+					'nux-js/lib/*',
+					'nux-js/*',
 					'editarea/*',
 				),
 			),
