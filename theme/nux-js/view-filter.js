@@ -27,8 +27,17 @@ function ViewFilter()
 	 * Initalize after doc.ready.
 	 */
 	this.init = function () {
+		// parent container
+		var container = document.getElementById("view-message");
+		if (!container) {
+			return;
+		}
+		
 		// init items
 		items = $('#projectstatus [id^=job_]');
+		if (items.length < 2) {
+			return;
+		}
 		
 		// prepare input
 		var input = document.createElement("input");
@@ -37,7 +46,7 @@ function ViewFilter()
 		$.on(input, 'keyup', function() {
 			_self.filter(this.value);
 		});
-		document.getElementById("view-message").appendChild(input);
+		container.appendChild(input);
 	};
 
 	/**

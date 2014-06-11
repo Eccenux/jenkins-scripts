@@ -314,7 +314,16 @@ function ViewFilter()
 // EOC
 	this.init = function () {
 
+		var container = document.getElementById("view-message");
+		if (!container) {
+			return;
+		}
+
+
 		items = $('#projectstatus [id^=job_]');
+		if (items.length < 2) {
+			return;
+		}
 
 
 		var input = document.createElement("input");
@@ -323,7 +332,7 @@ function ViewFilter()
 		$.on(input, 'keyup', function() {
 			_self.filter(this.value);
 		});
-		document.getElementById("view-message").appendChild(input);
+		container.appendChild(input);
 	};
 // EOC
 	this.filter = function (phrase) {
