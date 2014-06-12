@@ -325,6 +325,15 @@ function ViewFilter()
 			return;
 		}
 
+		for (var i = 0; i < items.length; i++) {
+			var item = items[i];
+			item.ViewFilter_extraText = '';
+			var links = item.getElementsByClassName('model-link');
+			if (links.length) {
+				item.ViewFilter_extraText = links[0].getAttribute('href');
+			}
+		}
+
 
 		var input = document.createElement("input");
 		input.setAttribute("type", "text");
@@ -348,7 +357,7 @@ function ViewFilter()
 		//var re = new RegExp('('+words+')', 'i');
 		for (var i = 0; i < items.length; i++) {
 			var item = items[i];
-			if (re.test(item.textContent)) {
+			if (re.test(item.textContent + ' ' + item.ViewFilter_extraText)) {
 				item.style.display='';
 			} else {
 				item.style.display='none';
