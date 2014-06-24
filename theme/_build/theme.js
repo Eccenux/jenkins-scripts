@@ -327,9 +327,11 @@ function ViewFilter()
 
 		for (var i = 0; i < items.length; i++) {
 			var item = items[i];
+			item.ViewFilter_text = '';
 			item.ViewFilter_extraText = '';
 			var links = item.getElementsByClassName('model-link');
 			if (links.length) {
+				item.ViewFilter_text = links[0].textContent;
 				item.ViewFilter_extraText = links[0].getAttribute('href');
 			}
 		}
@@ -357,7 +359,7 @@ function ViewFilter()
 		//var re = new RegExp('('+words+')', 'i');
 		for (var i = 0; i < items.length; i++) {
 			var item = items[i];
-			if (re.test(item.textContent + ' ' + item.ViewFilter_extraText)) {
+			if (re.test(item.ViewFilter_text + ' ' + item.ViewFilter_extraText)) {
 				item.style.display='';
 			} else {
 				item.style.display='none';
