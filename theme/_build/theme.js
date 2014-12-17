@@ -49,6 +49,32 @@ jQueryMini.on = function(element, eventName, onEvent) {
 };
 
 // jQueryMini.js, EOF
+// login-check.js, line#0
+/**
+ * Adds a notice for users that are not logged in with upper case letter.
+ *
+ * @author Maciej "Nux" Jaros
+ *
+ * Licensed under (at ones choosing)
+ * <li>MIT License: http:
+ * <li>or CC-BY: http:
+ *
+ * @requires jQueryMini or Actual jQuery.
+ */
+(function ($) {
+	$('#j_username').each(function(){
+		$.on(this, 'change', function() {
+			var login = this.value;
+			if (login.length && login[0].toLowerCase() === login[0]) {
+				alert('Login MUSI być wpisany z dużej litery!'
+					+'\n\nInaczej nie będziesz mieć normalnych uprawnień.'
+					+'\n\nPrzykład: józefk - źle, JózefK - dobrze.'
+				);
+			}
+		});
+	});
+})(jQueryMini);
+// login-check.js, EOF
 // minor-fixes.js, line#0
 /**
 	Various small fixes/changes.
