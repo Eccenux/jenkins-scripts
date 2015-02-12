@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Just a test for Jenkins scripts grouping</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>group-start</name>
+          <description>Note that this is only an indicator of a group being started. It will not be visible to users.
+
+Also note that after &quot;checkboxTrigger-&quot; there is a name of a checkbox that will open the group (in this case the name is &quot;SomethingDangerous&quot;)</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>checkboxTrigger-SomethingDangerous</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>SomethingDangerous</name>
+          <description>Do something dangerous (like e.g. omit backup or do production rollout)</description>
+          <defaultValue>false</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>IUnderstandWhatImDoing</name>
+          <description>Click if you are positive that you understand what you are doing.
+
+&lt;p&gt;This is just an example re-confirmation.</description>
+          <defaultValue>false</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>SomethingDifferent</name>
+          <description>And this is something different that is used when doimng something dangerous.</description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.21">
+      <autoRebuild>false</autoRebuild>
+    </com.sonyericsson.rebuild.RebuildSettings>
+    <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@1.8.2">
+      <maxConcurrentPerNode>0</maxConcurrentPerNode>
+      <maxConcurrentTotal>0</maxConcurrentTotal>
+      <throttleEnabled>false</throttleEnabled>
+      <throttleOption>project</throttleOption>
+    </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>set +x
+
+echo -e &quot;\n\n&quot;
+
+if [ &quot;$SomethingDangerous&quot; = &quot;true&quot; ]
+then
+  if [ ! &quot;$IUnderstandWhatImDoing&quot; = &quot;true&quot; ]
+  then
+    echo &quot;[&quot;&quot;WARNING] You cannot do something dangerous if you do not understan what you are doing.&quot;
+    echo -e &quot;\n\n&quot;
+    exit 1
+  fi
+
+  doSomethingDangerous.sh $SomethingDifferent
+fi
+</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
