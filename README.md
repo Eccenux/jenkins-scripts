@@ -22,14 +22,14 @@ Integrates [EditArea](http://www.cdolivet.com/editarea/) syntax highlighting eng
 Grouping parameters
 -------------------
 
-This is a bit hacky enhancement to allow collapsing blocks of parameters with a checkbox. For example you have a checkbox to enable some tests and when it's checked it shows additional testing parameters (hidden by default).
+This is a bit hacky enhancement to allow collapsing blocks of parameters with a checkbox. For example you have a checkbox to enable some tests and when it's checked it shows additional testing parameters (hidden by default). Or - my personal favorite - there are some dangerous options that you need to make sure users understands.
 
-Request for a less hacky solution is in the [issue JENKINS-19002](https://issues.jenkins-ci.org/browse/JENKINS-19002).
+Please vote for a less hacky solution is in the [issue JENKINS-19002](https://issues.jenkins-ci.org/browse/JENKINS-19002).
 
 <div style="margin:1em auto">
 <img style="float:left; max-width:48%;" src="https://raw.github.com/Eccenux/jenkins-scripts/master/screen/param-group-en-collapsed.png" alt="Collapsed group">
 <img style="float:left; max-width:48%;" src="https://raw.github.com/Eccenux/jenkins-scripts/master/screen/param-group-en-opened.png" alt="Opened group">
-<p style="clear:both">Running example job ([config.xml](https://github.com/Eccenux/jenkins-scripts/blob/master/example-grouping/config.xml))</p>
+<p style="clear:both">Above screenshots are from running an example job with a single group (<a href="https://github.com/Eccenux/jenkins-scripts/blob/master/example-grouping/config.xml">config.xml</a>)</p>
 </div>
 
 How to make collapsible groups now?
