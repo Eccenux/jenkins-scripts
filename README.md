@@ -26,6 +26,12 @@ This is a bit hacky enhancement to allow collapsing blocks of parameters with a 
 
 Request for a less hacky solution is in the [issue JENKINS-19002](https://issues.jenkins-ci.org/browse/JENKINS-19002).
 
+<div style="margin:1em auto">
+<img style="float:left; max-width:48%;" src="https://raw.github.com/Eccenux/jenkins-scripts/master/screen/param-group-en-collapsed.png" alt="Collapsed group">
+<img style="float:left; max-width:48%;" src="https://raw.github.com/Eccenux/jenkins-scripts/master/screen/param-group-en-opened.png" alt="Opened group">
+<p style="clear:both">Running example job ([config.xml](https://github.com/Eccenux/jenkins-scripts/blob/master/example-grouping/config.xml))</p>
+</div>
+
 How to make collapsible groups now?
 
 ### Step 1. Start a group ###
