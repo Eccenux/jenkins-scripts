@@ -23,7 +23,6 @@ $buildPackages = array(
 	'theme' => array(
 		'srcBase' => '',
 		'packages' => array(
-			// application build (common including i18n and model)
 			'common' => array(
 				'debug' => true,	// unpack in browser by default
 				'dest' => 'theme.js',
@@ -32,6 +31,19 @@ $buildPackages = array(
 					'nux-js/lib/*',
 					'nux-js/*',
 					'editarea/*',
+				),
+			),
+		),
+	),
+	'css' => array(
+		'srcBase' => '',
+		'packages' => array(
+			'common' => array(
+				'debug' => true,	// unpack in browser by default
+				'dest' => 'theme.css',
+				'src' => array(
+					// note `*` means all immediate CSS files (does not include subdirs)
+					'css/*',
 				),
 			),
 		),

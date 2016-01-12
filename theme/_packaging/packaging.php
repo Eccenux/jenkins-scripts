@@ -32,4 +32,15 @@
 	$oLoader->isIgnoreLineNumbers = true;
 
 	$oLoader->buildPackages($strBundleRoot, $buildPackages['theme']);
+	
+	//==========================================
+	// CSS
+	//==========================================
+
+	// package CSS
+	$oCSSLoader->noCache = true;
+	$oCSSLoader->isPreserveMultiCommentsWithCopyright = true;
+	$oCSSLoader->isIgnoreLineNumbers = true;
+	
+	$oCSSLoader->buildPackages($strBundleRoot, $buildPackages['css']);
 ?>

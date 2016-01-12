@@ -3,7 +3,10 @@
 /**
  *	jQuery mini
  *
- *	This implments most used feature of jQuery i.e. selecting and traversing a list of elements and onready function.
+ *	This implments most used features of jQuery:
+ *	<li>selecting and traversing a list of elements; e.g.: $('#class').each(function(){this...})
+ *	<li>running function on document ready; e.g.: $(function(){...})
+ *	<li>running function on event function; e.g.: $.on(element, 'change', function(){...})
  *
  *	Yes, it ignores existance of old IE. Currently supports IE9 and higher.
  *

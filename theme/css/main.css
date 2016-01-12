@@ -1,0 +1,6 @@
+/* groupped jobs table wrapping */
+.categoryJobs td {
+	max-width: 300px;
+	vertical-align: top;
+	white-space: normal;
+}
