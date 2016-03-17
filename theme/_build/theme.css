@@ -2,6 +2,10 @@
 /*main.css, line#0*/
 
 /*EOC*/
+.article-heading {
+	display: none;
+}
+/*EOC*/
 .categoryJobs td {
 	max-width: 300px;
 	vertical-align: top;
