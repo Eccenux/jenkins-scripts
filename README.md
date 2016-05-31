@@ -54,8 +54,8 @@ Group continues until the end of params or next group start box.
 To end a group before the end of params add a "Choice" parameter named `group-start` with option "-".
 
 
-Minor fixes
------------
+Minor enhancements
+------------------
 
 * `nux-js/minor-fixes.js` - contains various minor fixes (mainly usability enhancements).
 * `nux-js/checkboxes-helper.js` - for each large checkboxes group add a "clear all" / "choose all" button.
