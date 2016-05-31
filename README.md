@@ -57,4 +57,5 @@ To end a group before the end of params add a "Choice" parameter named `group-st
 Minor fixes
 -----------
 
-`nux-js/minor-fixes.js` - contains various minor fixes (mainly usability enhancements).
+* `nux-js/minor-fixes.js` - contains various minor fixes (mainly usability enhancements).
+* `nux-js/checkboxes-helper.js` - for each large checkboxes group add a "clear all" / "choose all" button.
