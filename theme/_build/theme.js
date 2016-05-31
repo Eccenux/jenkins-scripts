@@ -52,6 +52,66 @@ jQueryMini.on = function(element, eventName, onEvent) {
 };
 
 // jQueryMini.js, EOF
+// checkboxes-helper.js, line#0
+/**
+	Checkboxes helper.
+
+	For each checkboxes group add a (un)check all button.
+
+	@author Maciej "Nux" Jaros
+	Licensed under (at ones choosing)
+	<li>MIT License: http:
+	<li>or CC-BY: http:
+*/
+(function () {
+
+	var controller = new Controller();
+	controller.init();
+// EOC
+	var prepareUncheckAll = function() {
+		var parameterBodies = document.querySelectorAll("table.parameters > tbody");
+		for (var i = 0; i < parameterBodies.length; i++) {
+			var parameterBody = parameterBodies[i];
+			var checkboxes = parameterBody.querySelectorAll("input[type=checkbox]");
+			if (checkboxes.length > 3) {
+				addUncheckButton(parameterBody);
+			}
+		}
+		return parameters;
+	};
+// EOC
+	var addUncheckButton = function(parameterBody) {
+		var container = parameterBody.querySelector(".setting-main");
+		var btn = document.createElement('a');
+		container.appendChild(btn);
+		btn.href="#";
+		btn.checkboxesChecked = true;
+		btn.setButtonState = function() {
+			btn.textContent = (btn.checkboxesChecked) ? 'clear all' : 'choose all';
+			//btn.textContent = (btn.checkboxesChecked) ? '☐☐' : '☑☑';
+		}
+		btn.onclick = function() {
+			var checkboxes = parameterBody.querySelectorAll("input[type=checkbox]");
+			for (var i = 0; i < checkboxes.length; i++) {
+				checkboxes[i].checked = !btn.checkboxesChecked;
+			}
+			btn.checkboxesChecked = !btn.checkboxesChecked;
+			btn.setButtonState();
+		};
+		btn.setButtonState();
+	};
+// EOC
+	function Controller() {
+		this.init = function() {
+			addEventListener("load", function () {
+				prepareUncheckAll();
+			});
+		};
+	}
+
+})();
+
+// checkboxes-helper.js, EOF
 // login-check.js, line#0
 /**
  * Adds a notice for users that are not logged in with upper case letter.
