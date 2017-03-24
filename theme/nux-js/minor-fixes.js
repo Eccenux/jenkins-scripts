@@ -42,10 +42,10 @@
 				+'<a class="task-icon-link" href="lastBuild/console">'
 					+'<img style="width: 24px; height: 24px; width: 24px; height: 24px; margin: 2px;" src="/plugin/extra-columns/images/32x32/terminal.png">'
 				+'</a>&nbsp;'
-				+'<a class="task-link" href="lastBuild/console">Ostatni/bie¿¹cy log</a>'
+				+'<a class="task-link" href="lastBuild/console">Ostatni/bieÅ¼Ä…cy log</a>'
 			+'</div>';
 			this.appendChild(nel);
-			//<a href="job/adm-mol.pl--check-for-errors/lastBuild/console"><img title="Ostatnie/bie¿¹ce wyjœcie z konsoli" alt="Ostatnie/bie¿¹ce wyjœcie z konsoli" src="/plugin/extra-columns/images/32x32/terminal.png" border="0"></a>
+			//<a href="job/adm-mol.pl--check-for-errors/lastBuild/console"><img title="Ostatnie/bieÅ¼Ä…ce wyjÅ›cie z konsoli" alt="Ostatnie/bieÅ¼Ä…ce wyjÅ›cie z konsoli" src="/plugin/extra-columns/images/32x32/terminal.png" border="0"></a>
 		});
 	}
 
