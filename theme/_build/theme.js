@@ -192,8 +192,11 @@ jQueryMini.on = function(element, eventName, onEvent) {
 		this.init = function() {
 			var _self = this;
 			addEventListener("load", function () {
+				var isJobPage = location.pathname.search('/job/') >= 0;
 				fixCategoryViews();
-				jobSidePanelEnhance();
+				if (isJobPage) {
+					jobSidePanelEnhance();
+				}
 			});
 		};
 	}
