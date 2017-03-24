@@ -31,6 +31,25 @@
 	}
 
 	/**
+		Extra tasks/links in side panel of a job.
+		
+		+Last Build
+	*/
+	function jobSidePanelEnhance() {
+		$('#side-panel #tasks').each(function(){
+			var nel = document.createElement('div');
+			nel.innerHTML = '<div class="task">'
+				+'<a class="task-icon-link" href="lastBuild/console">'
+					+'<img style="width: 24px; height: 24px; width: 24px; height: 24px; margin: 2px;" src="/plugin/extra-columns/images/32x32/terminal.png">'
+				+'</a>&nbsp;'
+				+'<a class="task-link" href="lastBuild/console">Ostatni/bie¿¹cy log</a>'
+			+'</div>';
+			this.appendChild(nel);
+			//<a href="job/adm-mol.pl--check-for-errors/lastBuild/console"><img title="Ostatnie/bie¿¹ce wyjœcie z konsoli" alt="Ostatnie/bie¿¹ce wyjœcie z konsoli" src="/plugin/extra-columns/images/32x32/terminal.png" border="0"></a>
+		});
+	}
+
+	/**
 	 * Controller functions.
 	 *
 	 * @returns {Controller}
@@ -40,6 +59,7 @@
 			var _self = this;
 			addEventListener("load", function () {
 				fixCategoryViews();
+				jobSidePanelEnhance();
 			});
 		};
 	}
