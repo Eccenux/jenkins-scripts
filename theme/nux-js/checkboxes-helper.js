@@ -25,7 +25,6 @@
 				addUncheckButton(parameterBody);
 			}
 		}
-		return parameters;
 	};
 
 	/**
