@@ -21,6 +21,7 @@
 	// Copy files
 	//==========================================
 	$oFileHelper->copy('editarea/lib', $strBundleRoot.'editarea');
+	$oFileHelper->copy('images', $strBundleRoot.'images');
 
 	//==========================================
 	// JS

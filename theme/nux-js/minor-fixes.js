@@ -36,16 +36,28 @@
 		+Last Build
 	*/
 	function jobSidePanelEnhance() {
+		var jobBaseUrl = location.pathname.replace(/(\/job\/.+?\/).*/, '$1');
 		$('#side-panel #tasks').each(function(){
-			var nel = document.createElement('div');
+			var nel;
+			// last build console
+			nel = document.createElement('div');
 			nel.innerHTML = '<div class="task">'
-				+'<a class="task-icon-link" href="lastBuild/console">'
+				+'<a class="task-icon-link" href="'+jobBaseUrl+'lastBuild/console">'
 					+'<img style="width: 24px; height: 24px; width: 24px; height: 24px; margin: 2px;" src="/plugin/extra-columns/images/32x32/terminal.png">'
 				+'</a>&nbsp;'
-				+'<a class="task-link" href="lastBuild/console">Ostatni/bieżący log</a>'
+				+'<a class="task-link" href="'+jobBaseUrl+'lastBuild/console">Ostatni/bieżący log</a>'
 			+'</div>';
 			this.appendChild(nel);
-			//<a href="job/adm-mol.pl--check-for-errors/lastBuild/console"><img title="Ostatnie/bieżące wyjście z konsoli" alt="Ostatnie/bieżące wyjście z konsoli" src="/plugin/extra-columns/images/32x32/terminal.png" border="0"></a>
+			
+			// build-time trends
+			nel = document.createElement('div');
+			nel.innerHTML = '<div class="task">'
+				+'<a class="task-icon-link" href="'+jobBaseUrl+'buildTimeTrend">'
+					+'<img style="width: 24px; height: 24px; width: 24px; height: 24px; margin: 2px;" src="/jenkins-theme/images/time-trend.svg">'
+				+'</a>&nbsp;'
+				+'<a class="task-link" href="'+jobBaseUrl+'buildTimeTrend">Czas budowania</a>'
+			+'</div>';
+			this.appendChild(nel);
 		});
 	}
 
