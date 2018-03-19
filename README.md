@@ -5,7 +5,13 @@ Jenkins JavaScript enhancements package.
 
 The `theme` folder contains simple `_packaging` script that builds `theme.js` for simple inclusion in Jenkins with [Simple Theme Plugin](https://wiki.jenkins-ci.org/display/JENKINS/Simple+Theme+Plugin).
 
-Below is a description of most important enhancement scripts.
+Quick start
+-----------
+1. Download `theme.js` and `theme.css` from [theme/\_build](https://github.com/Eccenux/jenkins-scripts/tree/master/theme/_build).
+2. Install [Simple Theme Plugin](https://wiki.jenkins-ci.org/display/JENKINS/Simple+Theme+Plugin) in your Jenkins.
+3. Configure Simple Theme Plugin to point to your downloaded `theme.js` and `theme.css`.
+
+Ar this point all cnhancements described below should work in your Jenkins installation.
 
 ViewFilter
 ----------
