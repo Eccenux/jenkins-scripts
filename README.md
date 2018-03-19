@@ -11,7 +11,7 @@ Quick start
 2. Install [Simple Theme Plugin](https://wiki.jenkins-ci.org/display/JENKINS/Simple+Theme+Plugin) in your Jenkins.
 3. Configure Simple Theme Plugin to point to your downloaded `theme.js` and `theme.css`.
 
-Ar this point all cnhancements described below should work in your Jenkins installation.
+At this point most enhancements described below should work in your Jenkins installation. You might need to download other files from the `_build` folder for all enhancements to work properly.
 
 ViewFilter
 ----------
