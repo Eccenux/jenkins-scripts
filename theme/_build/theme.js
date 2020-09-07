@@ -249,7 +249,7 @@ jQueryMini.on = function(element, eventName, onEvent) {
 			this.body = parameterBody;
 			this.originalDisplay = parameterBody.style.display;
 			try {
-				this.name = "" + parameterBody.querySelector(".setting-name").textContent;
+				this.name = "" + parameterBody.querySelector(".setting-main > div > input[name=name]").value;
 			}
 			catch(e) {
 				this.name = null;
