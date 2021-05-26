@@ -332,7 +332,11 @@ jQueryMini.on = function(element, eventName, onEvent) {
 				for (var i = 0; i < this.parameters.length; i++) {
 // EOC
 					var parameter = this.parameters[i];
-					parameter.body.querySelector(".setting-name").style.color = '#555';
+                    try {
+                        parameter.body.querySelector(".setting-name").style.color = '#555';
+                    }
+                    catch(e) {
+                    }
 				}
 			}
 		};
