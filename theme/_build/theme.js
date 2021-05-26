@@ -371,7 +371,7 @@ jQueryMini.on = function(element, eventName, onEvent) {
 		};
 // EOC
 		this.parseParameters = function() {
-			var parameterBodies = document.querySelectorAll("table.parameters > tbody");
+			var parameterBodies = document.querySelectorAll("div.parameters > div.form-group");
 			var parameters = [];
 			for (var i = 0; i < parameterBodies.length; i++) {
 				var parameterBody = parameterBodies[i];
