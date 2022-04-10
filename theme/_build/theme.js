@@ -332,11 +332,10 @@ jQueryMini.on = function(element, eventName, onEvent) {
 				for (var i = 0; i < this.parameters.length; i++) {
 // EOC
 					var parameter = this.parameters[i];
-                    try {
-                        parameter.body.querySelector(".setting-name").style.color = '#555';
-                    }
-                    catch(e) {
-                    }
+					try {
+						parameter.body.querySelector(".setting-name").style.color = '#555';
+					} catch(e) {
+					}
 				}
 			}
 		};
@@ -375,7 +374,7 @@ jQueryMini.on = function(element, eventName, onEvent) {
 		};
 // EOC
 		this.parseParameters = function() {
-			var parameterBodies = document.querySelectorAll("div.parameters > div.form-group");
+			var parameterBodies = document.querySelectorAll("div.parameters > div.jenkins-form-item");
 			var parameters = [];
 			for (var i = 0; i < parameterBodies.length; i++) {
 				var parameterBody = parameterBodies[i];
