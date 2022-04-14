@@ -1,13 +1,13 @@
 /**
 	Grouping parametrs.
 	
-	On configuration page add group start box which is a Choice parameter named "group-start" with following options:
+	On configuration page add group start box which is a Choice parameter named "group-start" (or "group-start_<0-9>") with following options:
 	<li>collapsible - if option is given then it will be possible to close the group with a button.
 	<li>collapsed - if option is given the group will be closed by default.
 	<li>checkboxTrigger-SomeCheckboxParameterName - if option is given group will be closed when checkbox is unchecked (and shown otherwise).
 	
 	Group continues until the end of params or next group start box.
-	To end a group before the end of params add "group-start" with option "-".
+	To end a group before the end of params add "group-start" (or "group-end" or "group-end_<0-9>") with option "-".
 
 	@todo Specify and show title.
 	@todo Add show/hide button (for non checkbox triggered groups).
@@ -134,7 +134,7 @@
 		 * @returns {Boolean}
 		 */
 		this.checkIfMine = function(parameter) {
-			if (parameter.name == 'group-start') {
+			if (/^group-(start|end)(_[0-9]+)?$/.test(parameter.name)) {
 				return false;
 			}
 			// trigger is not an element of the group
