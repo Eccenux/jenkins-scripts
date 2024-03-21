@@ -12,19 +12,62 @@ Not supported by Jenkins-CodeMirror:
 
 ## Structure
 
-Jenkins v2 todo...
-
-SSH:
-```html
-<textarea name="_.execCommand" class="setting-input validated ssh-exec-control" checkurl=".../descriptorByName/jenkins.plugins.publish_over_ssh.BapSshTransfer/checkExecCommand" rows="9">
-```
-
-Groovy: 
-```html
-<textarea name="_.script" rows="5" class="jenkins-input validated  " checkurl=".../descriptorByName/org.jenkinsci.plugins.scriptsecurity.sandbox.groovy.SecureGroovyScript/checkScript"></textarea>
-```
-
-Windows:
-```html
-<textarea name="command" class="setting-input   fixed-width" rows="5"></textarea>
+```json
+[
+  {
+    "descriptorid": "hudson.plugins.groovy.Groovy",
+    "rows": [
+      {
+        "name": "_.properties",
+        "class": "jenkins-input   ",
+        "html": "<textarea name=\"_.properties\" rows=\"5\" class=\"jenkins-input   \">"
+      }
+    ]
+  },
+  {
+    "descriptorid": "jenkins.plugins.nodejs.NodeJSCommandInterpreter",
+    "rows": [
+      {
+        "name": "_.command",
+        "class": "jenkins-input   ",
+        "html": "<textarea name=\"_.command\" rows=\"5\" class=\"jenkins-input   \">"
+      }
+    ]
+  },
+  {
+    "descriptorid": "hudson.tasks.BatchFile",
+    "rows": [
+      {
+        "name": "command",
+        "class": "jenkins-input   fixed-width",
+        "html": "<textarea name=\"command\" rows=\"5\" class=\"jenkins-input   fixed-width\">"
+      }
+    ]
+  },
+  {
+    "descriptorid": "hudson.plugins.groovy.SystemGroovy",
+    "rows": [
+      {
+        "name": "_.script",
+        "class": "jenkins-input validated  ",
+        "html": "<textarea checkdependson=\"sandbox oldScript\" name=\"_.script\" checkmethod=\"post\" rows=\"6\" class=\"jenkins-input validated  \" checkurl=\"/job/test-highlighters/descriptorByName/org.jenkinsci.plugins.scriptsecurity.sandbox.groovy.SecureGroovyScript/checkScript\">"
+      },
+      {
+        "name": "_.bindings",
+        "class": "jenkins-input   ",
+        "html": "<textarea name=\"_.bindings\" rows=\"5\" class=\"jenkins-input   \">"
+      }
+    ]
+  },
+  {
+    "descriptorid": "jenkins.plugins.publish_over_ssh.BapSshBuilderPlugin",
+    "rows": [
+      {
+        "name": "_.key",
+        "class": "jenkins-input   ",
+        "html": "<textarea name=\"_.key\" rows=\"5\" class=\"jenkins-input   \">"
+      }
+    ]
+  }
+]
 ```
