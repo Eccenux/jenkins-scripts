@@ -3,6 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Jenkins loader test and auto-id</title>
+	<style>
+		textarea {
+			width: 100%;
+			min-height: 200px;
+			box-sizing: border-box;
+		}
+	</style>
 	<script>
 	(function(){
 		var script = document.createElement('script');
@@ -27,12 +34,19 @@
 		};
 		var lastId = 0;
 		var enhanceName = 'js-ux-DolivetEditArea';
+		var inputSelector = 'textarea.jenkins-input:not(.codemirror)';
+		var inputSelector = 'textarea:not(.codemirror)';
+		/** Check if the input was already enhanced in any known way. */
+		function alreadyDone(textarea) {
+			return (textarea.classList.contains(enhanceName) || textarea.classList.contains('codemirror') );
+		}
+		/** Generate id and init. */
 		function initAreas() {
 			var userLanguage = navigator.language;
-			var enhanceUs = document.getElementsByTagName('textarea');
+			var enhanceUs = document.querySelectorAll('textarea');
 			for (var i=0; i < enhanceUs.length; i++) {
 				var textarea = enhanceUs[i];
-				if (textarea.classList.contains(enhanceName)) {
+				if (alreadyDone(textarea)) {
 					console.log('already done: ', textarea.id);
 					continue;
 				}
@@ -42,6 +56,11 @@
 					lastId++;
 					textarea.id = enhanceName + '-i' + lastId;
 				}
+				var highlighter = 'bash';
+				if (textarea.classList.contains('groovy')) {
+					highlighter = 'java';
+				}
+				console.log('highlighter:', highlighter);
 				// initialisation
 				editAreaLoader.init({
 					id: textarea.id
@@ -49,10 +68,10 @@
 					,allow_resize: "both"
 					,allow_toggle: true
 					,word_wrap: true
-					,min_width: 600
-					,min_height: 300
+					,min_width: 400
+					,min_height: 200
 					,language: userLanguage
-					,syntax: "bash"
+					,syntax: highlighter
 					,change_callback:'editAreaJenkinsAutoUpdate'
 				});
 			}
@@ -61,12 +80,17 @@
 	</script>
 </head>
 <body>
+<h1>EditArea examples</h1>
+<p>Test initialisation of the EditArea editor.</p>
+<p>Options: highlighter enabled, word-wrap enabled, resize enabled and default toolbar. Also offer toggle. Note! Resize works on-click (click, let go, drag, click)</p>
+<p>Automatic id: adds ids as in Jenkins textareas don't have them most of them the time. 
+	Note that EditArea editor requires the <code>id</code> setting to be set in <code>editAreaLoader.init</code> function.</p>
+
 <h2>EditArea bash examples</h2>
 <form action='' method='post'>
 	<fieldset>
-		<legend>Example 1</legend>
-		<p>Test in English with php syntax, highlighted, toggle enabled, word-wrap enabled, resize enabled and default toolbar. Also offer the possibility to switch on/off the readonly mode.</p>
-		<textarea id="example_1" style="height: 350px; width: 100%;" name="test_1">
+		<legend>Bash with id</legend>
+		<textarea id="example_1" name="test_1">
 repoUrl=https://github.com/Eccenux/jenkins-scripts.git
 repoName=jenkins-scripts
 
@@ -81,8 +105,10 @@ fi
 
 cp jenkins-scripts/theme/_build/theme.js /usr/share/apache-tomcat/webapps/jenkins-theme/theme.js
 </textarea>
-
-		<textarea>
+</fieldset>
+<fieldset>
+	<legend>Bash without id</legend>
+	<textarea>
 repoUrl=https://github.com/Eccenux/jenkins-scripts.git
 repoName=jenkins-scripts
 
@@ -97,7 +123,40 @@ fi
 
 cp jenkins-scripts/theme/_build/theme.js /usr/share/apache-tomcat/webapps/jenkins-theme/theme.js
 </textarea>
-	</fieldset>
+</fieldset>
+
+<h2>EditArea Groovy/Java</h2>
+<fieldset>
+		<legend>Groovy command</legend>
+		<textarea class="groovy">
+// wersja do ustawienia opisu
+println("\n[DEBUG] wersja do ustawienia opisu");
+
+def versionDesc = build.buildVariableResolver.resolve("VersionDesc");
+
+// read files from workspace
+def workspace = build.getEnvVars()["WORKSPACE"];
+// for hudson.FilePath (works on slaves)
+def nodeChannel = build.workspace.channel
+
+// "15351"
+def svnVersion = new hudson.FilePath(nodeChannel, workspace + '/artifacts/svn-revision').readToString();
+// "19.0.3/release" -> "19.0.3"
+def applicationVersion = new hudson.FilePath(nodeChannel, workspace + '/artifacts/svn-tag').readToString().replaceAll(~/([\d\.]+)[\s\S]+/, '$1');
+
+description = "${applicationVersion}.${svnVersion}"
+if (!versionDesc?.isEmpty()) {
+  	description += "\n<br>" + versionDesc;
+}
+
+// set for now
+build.setDescription(description);
+
+// this won't work for mult-line strings
+// save for later (e.g. for UniwersalBuildChecker)
+//println("[DESC] " + description);
+</textarea>
+</fieldset>
 </form>
 </body>
 </html>
