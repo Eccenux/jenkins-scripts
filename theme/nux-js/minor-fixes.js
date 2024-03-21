@@ -12,25 +12,6 @@
 	controller.init();
 	
 	/**
-		Links in groupped view is incorret in that all links are relative to current URL (and not some job).
-	*/
-	function fixCategoryViews() {
-		// remove links
-		$('.categoryJobRow a').each(function(){
-			this.parentNode.insertBefore(document.createTextNode(this.textContent), this);
-			this.style.display='none';
-		});
-		// show headers
-		$('.categoryJobs .hidden-header').each(function(){
-			this.className = '';
-		});
-		// fix header margin
-		$('.categoryJobsColumn table').each(function(){
-			this.style.marginTop = '0px';
-		});
-	}
-
-	/**
 		Extra tasks/links in side panel of a job.
 		
 		+Last Build
@@ -78,14 +59,15 @@
 	 */
 	function Controller() {
 		this.init = function() {
-			var _self = this;
-			addEventListener("load", function () {
-				var isJobPage = location.pathname.search('/job/') >= 0;
-				fixCategoryViews();
-				if (isJobPage) {
-					jobSidePanelEnhance();
-				}
-			});
+			var isJobPage = location.pathname.search('/job/') >= 0;
+			if (isJobPage) {
+				addEventListener("load", function () {
+					// not on config page
+					if (document.getElementById('buildHistory')) {
+						jobSidePanelEnhance();
+					}
+				});
+			}
 		};
 	}
 

@@ -158,22 +158,6 @@ jQueryMini.on = function(element, eventName, onEvent) {
 	var controller = new Controller();
 	controller.init();
 // EOC
-	function fixCategoryViews() {
-
-		$('.categoryJobRow a').each(function(){
-			this.parentNode.insertBefore(document.createTextNode(this.textContent), this);
-			this.style.display='none';
-		});
-
-		$('.categoryJobs .hidden-header').each(function(){
-			this.className = '';
-		});
-
-		$('.categoryJobsColumn table').each(function(){
-			this.style.marginTop = '0px';
-		});
-	}
-// EOC
 	function jobSidePanelEnhance() {
 		var jobBaseUrl = location.pathname.replace(/(\/job\/.+?\/).*/, '$1');
 		var tpl = (o) => `
@@ -212,14 +196,15 @@ jQueryMini.on = function(element, eventName, onEvent) {
 // EOC
 	function Controller() {
 		this.init = function() {
-			var _self = this;
-			addEventListener("load", function () {
-				var isJobPage = location.pathname.search('/job/') >= 0;
-				fixCategoryViews();
-				if (isJobPage) {
-					jobSidePanelEnhance();
-				}
-			});
+			var isJobPage = location.pathname.search('/job/') >= 0;
+			if (isJobPage) {
+				addEventListener("load", function () {
+
+					if (document.getElementById('buildHistory')) {
+						jobSidePanelEnhance();
+					}
+				});
+			}
 		};
 	}
 
