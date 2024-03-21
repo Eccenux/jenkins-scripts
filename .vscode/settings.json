@@ -6,5 +6,8 @@
 		"markdown",
 		"latex",
 		"plaintext"
-	]
+	],
+	"search.exclude": {
+		"**/_build": true
+	}
 }

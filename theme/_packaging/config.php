@@ -30,7 +30,7 @@ $buildPackages = array(
 					// note `*` means all immediate JS files (does not include subdirs)
 					'nux-js/lib/*',
 					'nux-js/*',
-					// 'editarea/*',
+					'editarea/*',
 				),
 			),
 		),

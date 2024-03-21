@@ -521,3 +521,149 @@ $(function(){ViewFilter.init()});
 
 })(jQueryMini);
 // view-filter.js, EOF
+// jenkins-init.js, line#0
+/**
+ * Init EditArea for each known textarea.
+ *
+ * @author Maciej "Nux" Jaros
+ * Licensed under (at ones choosing)
+ * <li>MIT License: http:
+ * <li>or CC-BY: http:
+ */
+(function(){
+
+	var jenkinsThemeBaseUrl = "/userContent/nux-js/";	// YMMV - set this to whatever your "theme" files are
+
+	var logTag = '[DolivetEditArea]';
+
+	var lastId = 0;
+	var enhanceName = 'js-ux-DolivetEditArea';
+	// var inputSelector = 'textarea.jenkins-input:not(.codemirror)';
+	var inputSelector = 'textarea:not(.codemirror)';
+	var userLanguage = navigator.language;
+
+
+	if (!('querySelectorAll' in document)) {
+		console.warn(logTag, 'Browser not supported!');
+		return;
+	}
+	var isConfigPage = location.pathname.search(/job\/.+\/configure/) >= 0;
+	if (!isConfigPage) {
+		return;
+	}
+
+
+	loadScript(jenkinsThemeBaseUrl + 'editarea/edit_area_full.js', initAreas);
+// EOC
+	function initAreas() {
+
+		var behaviourGen = (highlighter, descriptorid) => ({
+			selector: `.jenkins-form-item [descriptorid="${descriptorid}"] textarea`,
+			id: `${enhanceName}-${highlighter}`,
+			priority: 0,
+			fun: (input) => {
+				var {count} = initSection([input], highlighter);
+				console.log(logTag, 'behaviour event:', {descriptorid, highlighter, count});
+			},
+		});
+		var behaviour = behaviourGen('java', "hudson.plugins.groovy.SystemGroovy");
+		Behaviour.specify(behaviour.selector, behaviour.id, behaviour.priority, behaviour.fun);
+		var behaviour = behaviourGen('bash', "jenkins.plugins.publish_over_ssh.BapSshBuilderPlugin");
+		Behaviour.specify(behaviour.selector, behaviour.id, behaviour.priority, behaviour.fun);
+
+		var sections = [...document.querySelectorAll('.jenkins-form-item [descriptorid]')];
+		var summary = {
+			total: 0,
+			plugins: [],
+		}
+		for (var section of sections) {
+			var descriptorid = section.getAttribute('descriptorid');
+			var inputs = section.querySelectorAll(inputSelector);
+			if (!inputs.length) {
+				continue;
+			}
+			var highlighter = getHighlighter(descriptorid);
+			if (highlighter) {
+				var {count} = initSection(inputs, highlighter);
+				summary.total += count;
+				summary.plugins.push(descriptorid);
+			}
+		}
+		var pluginList = [...new Set(summary.plugins)].join(', ');
+		console.log(logTag, `initialized: [${summary.total}] ${pluginList}.`);
+	}
+// EOC
+	function loadScript(url, onLoad) {
+		var script = document.createElement('script');
+		var head = document.getElementsByTagName('head')[0];
+		script.setAttribute('src', url);
+		head.appendChild(script);
+
+		var intervaId = setInterval(function(){
+			if (typeof(editAreaLoader) != 'undefined') {
+				clearInterval(intervaId);
+
+				setTimeout(function(){
+					onLoad();
+				}, 100);
+			}
+		}, 200);
+	}
+// EOC
+	function alreadyDone(textarea) {
+		return (textarea.classList.contains(enhanceName) || textarea.classList.contains('codemirror') );
+	}
+// EOC
+	function getHighlighter(descriptorid) {
+		var highlighter = '';
+		if (descriptorid === "hudson.plugins.groovy.SystemGroovy") {
+			highlighter = 'java';
+		} else if (descriptorid === "jenkins.plugins.publish_over_ssh.BapSshBuilderPlugin") {
+			highlighter = 'bash';
+		}
+		if (!highlighter.length) {
+			return false;
+		}
+		return highlighter;
+	}
+// EOC
+	function initSection(inputs, highlighter) {
+		var count = 0;
+
+		for (var textarea of inputs) {
+			if (alreadyDone(textarea)) {
+				console.log(logTag, 'already done: ', textarea.id);
+				continue;
+			}
+			textarea.classList.add(enhanceName);
+			textarea.classList.add(enhanceName + '-' + highlighter);
+
+			if (textarea.id.length < 1) {
+				lastId++;
+				textarea.id = enhanceName + '-i' + lastId;
+			}
+
+			count++;
+			editAreaLoader.init({
+				id: textarea.id
+				,start_highlight: true
+				,allow_resize: "both"
+				,allow_toggle: true
+				,display: "later"
+				,word_wrap: true
+				,min_width: 400
+				,min_height: 200
+				,language: userLanguage
+				,syntax: highlighter
+				,change_callback:'editAreaJenkinsAutoUpdate'
+			});
+		}
+
+		return {count};
+	}
+// EOC
+	window.editAreaJenkinsAutoUpdate = function (tid) {
+		document.getElementById(tid).value = editAreaLoader.getValue(tid);
+	};
+})();
+// jenkins-init.js, EOF

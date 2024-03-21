@@ -14,7 +14,8 @@
 
 	var lastId = 0;
 	var enhanceName = 'js-ux-DolivetEditArea';
-	var inputSelector = 'textarea.jenkins-input:not(.codemirror)';
+	// var inputSelector = 'textarea.jenkins-input:not(.codemirror)';
+	var inputSelector = 'textarea:not(.codemirror)';
 	var userLanguage = navigator.language;
 
 	// viablity check
@@ -34,9 +35,26 @@
 	 * Go through sections.
 	 */
 	function initAreas() {
+		// Jenkins Behaviour(s) -- run when new element is added
+		var behaviourGen = (highlighter, descriptorid) => ({
+			selector: `.jenkins-form-item [descriptorid="${descriptorid}"] textarea`,
+			id: `${enhanceName}-${highlighter}`,
+			priority: 0,
+			fun: (input) => {
+				var {count} = initSection([input], highlighter);
+				console.log(logTag, 'behaviour event:', {descriptorid, highlighter, count});
+			},
+		});
+		var behaviour = behaviourGen('java', "hudson.plugins.groovy.SystemGroovy");
+		Behaviour.specify(behaviour.selector, behaviour.id, behaviour.priority, behaviour.fun);
+		var behaviour = behaviourGen('bash', "jenkins.plugins.publish_over_ssh.BapSshBuilderPlugin");
+		Behaviour.specify(behaviour.selector, behaviour.id, behaviour.priority, behaviour.fun);
+
 		var sections = [...document.querySelectorAll('.jenkins-form-item [descriptorid]')];
-		var total = 0;
-		var done = [];
+		var summary = {
+			total: 0,
+			plugins: [],
+		}
 		for (var section of sections) {
 			var descriptorid = section.getAttribute('descriptorid');
 			var inputs = section.querySelectorAll(inputSelector);
@@ -46,12 +64,12 @@
 			var highlighter = getHighlighter(descriptorid);
 			if (highlighter) {
 				var {count} = initSection(inputs, highlighter);
-				total += count;
-				done.push(descriptorid);
+				summary.total += count;
+				summary.plugins.push(descriptorid);
 			}
 		}
-		var descriptors = [...new Set(done)].join(', ');
-		console.log(logTag, `initialized: [${total}] ${descriptors}.`);
+		var pluginList = [...new Set(summary.plugins)].join(', ');
+		console.log(logTag, `initialized: [${summary.total}] ${pluginList}.`);
 	}
 
 	/**
@@ -108,6 +126,7 @@
 				continue;
 			}
 			textarea.classList.add(enhanceName);
+			textarea.classList.add(enhanceName + '-' + highlighter);
 			// custom id
 			if (textarea.id.length < 1) {
 				lastId++;
