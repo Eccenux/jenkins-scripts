@@ -111,42 +111,9 @@ jQueryMini.on = function(element, eventName, onEvent) {
 })();
 
 // checkboxes-helper.js, EOF
-// login-check.js, line#0
+// job-actions.js, line#0
 /**
- * Adds a notice for users that are not logged in with upper case letter.
- *
- * @author Maciej "Nux" Jaros
- *
- * Licensed under (at ones choosing)
- * <li>MIT License: http:
- * <li>or CC-BY: http:
- *
- * @requires jQueryMini or an actual jQuery library.
- */
-(function ($) {
-	$(function(){
-		$('#j_username').each(function(){
-
-			$.on(this, 'change', function() {
-				var login = this.value;
-				if (login.length && login[0].toLowerCase() === login[0]) {
-					alert('Login MUSI być wpisany z dużej litery!'
-						+'\n\nInaczej nie będziesz mieć normalnych uprawnień.'
-						+'\n\nPrzykład: józefk - źle, JózefK - dobrze.'
-					);
-				}
-			});
-
-			var el = document.createElement('span');
-			el.textContent = ' Login MUSI być wpisany z dużej litery (józefk - źle, JózefK - dobrze).';
-			this.parentNode.appendChild(el);
-		});
-	});
-})(jQueryMini);
-// login-check.js, EOF
-// minor-fixes.js, line#0
-/**
-	Various small fixes/changes.
+	Extra job actions.
 
 	@author Maciej "Nux" Jaros
 	Licensed under (at ones choosing)
@@ -209,7 +176,40 @@ jQueryMini.on = function(element, eventName, onEvent) {
 	}
 
 })(jQueryMini);
-// minor-fixes.js, EOF
+// job-actions.js, EOF
+// login-check.js, line#0
+/**
+ * Adds a notice for users that are not logged in with upper case letter.
+ *
+ * @author Maciej "Nux" Jaros
+ *
+ * Licensed under (at ones choosing)
+ * <li>MIT License: http:
+ * <li>or CC-BY: http:
+ *
+ * @requires jQueryMini or an actual jQuery library.
+ */
+(function ($) {
+	$(function(){
+		$('#j_username').each(function(){
+
+			$.on(this, 'change', function() {
+				var login = this.value;
+				if (login.length && login[0].toLowerCase() === login[0]) {
+					alert('Login MUSI być wpisany z dużej litery!'
+						+'\n\nInaczej nie będziesz mieć normalnych uprawnień.'
+						+'\n\nPrzykład: józefk - źle, JózefK - dobrze.'
+					);
+				}
+			});
+
+			var el = document.createElement('span');
+			el.textContent = ' Login MUSI być wpisany z dużej litery (józefk - źle, JózefK - dobrze).';
+			this.parentNode.appendChild(el);
+		});
+	});
+})(jQueryMini);
+// login-check.js, EOF
 // parameter-grouping.js, line#0
 /**
 	Grouping parametrs.
