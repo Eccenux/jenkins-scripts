@@ -1,5 +1,5 @@
 /**
-	Various small fixes/changes.
+	Extra job actions.
 
 	@author Maciej "Nux" Jaros
 	Licensed under (at ones choosing)
@@ -12,9 +12,12 @@
 	controller.init();
 	
 	/**
-		Extra tasks/links in side panel of a job.
+		Extra job actions.
 		
-		+Last Build
+		Adds links in a side panel of a job.
+		
+		<li>last build console
+		<li>build-time trends
 	*/
 	function jobSidePanelEnhance() {
 		var jobBaseUrl = location.pathname.replace(/(\/job\/.+?\/).*/, '$1');
