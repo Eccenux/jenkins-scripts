@@ -39,20 +39,38 @@
 		}, 200);
 	}
 
+	var lastId = 0;
+	var enhanceName = 'js-ux-DolivetEditArea';
+	var inputSelector = 'textarea.jenkins-input:not(.codemirror)';
+	
+	/** Check if the input was already enhanced in any known way. */
+	function alreadyDone(textarea) {
+		return (textarea.classList.contains(enhanceName) || textarea.classList.contains('codemirror') );
+	}
+
 	/**
 	 * Init all recognized textareas.
 	 */
 	function initAreas() {
 		var userLanguage = navigator.language;
-		var enhanceUs = document.querySelectorAll(
-			'textarea[name="_.execCommand"].ssh-exec-control'
-			+ ',div[descriptorid="hudson.tasks.Shell"] textarea[name="command"]'
-		);
+		var enhanceUs = document.querySelectorAll(inputSelector);
 		for (var i=0; i < enhanceUs.length; i++) {
 			var textarea = enhanceUs[i];
-			if (textarea.id.length < 1) {
-				textarea.id = "enhanceUs_" + i;
+			if (alreadyDone(textarea)) {
+				console.log('already done: ', textarea.id);
+				continue;
 			}
+			textarea.classList.add(enhanceName);
+			// custom id
+			if (textarea.id.length < 1) {
+				lastId++;
+				textarea.id = enhanceName + '-i' + lastId;
+			}
+			var highlighter = 'bash';
+			if (textarea.classList.contains('groovy')) {
+				highlighter = 'java';
+			}
+			console.log('highlighter:', highlighter);
 			// initialisation
 			editAreaLoader.init({
 				id: textarea.id
@@ -61,10 +79,10 @@
 				,allow_toggle: true
 				,display: "later"	// do not start with the editor
 				,word_wrap: true
-				,min_width: 600
-				,min_height: 300
+				,min_width: 400
+				,min_height: 200
 				,language: userLanguage
-				,syntax: "bash"
+				,syntax: highlighter
 				,change_callback:'editAreaJenkinsAutoUpdate'
 			});
 		}
