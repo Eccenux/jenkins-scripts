@@ -44,4 +44,5 @@
 	$oCSSLoader->isIgnoreLineNumbers = true;
 	
 	$oCSSLoader->buildPackages($strBundleRoot, $buildPackages['css']);
-?>
+
+	echo "\nDone";

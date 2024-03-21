@@ -7,7 +7,8 @@
  * <li>or CC-BY: http://creativecommons.org/licenses/by/3.0/
  */
 (function(){
-	var jenkinsThemeBaseUrl = "/jenkins-theme/";	// YMMV - set this to whatever your "theme" files are
+	// /userContent/nux-js/theme.js
+	var jenkinsThemeBaseUrl = "/userContent/nux-js/";	// YMMV - set this to whatever your "theme" files are
 
 	if (!('querySelectorAll' in document)) {
 		console.warn('[EditAreaInit] Browser not supported!');

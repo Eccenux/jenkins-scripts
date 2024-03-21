@@ -176,26 +176,36 @@ jQueryMini.on = function(element, eventName, onEvent) {
 // EOC
 	function jobSidePanelEnhance() {
 		var jobBaseUrl = location.pathname.replace(/(\/job\/.+?\/).*/, '$1');
+		var tpl = (o) => `
+			<div class="task">
+				<span class="task-link-wrapper">
+					<a href="${o.href}" class="task-link task-link-no-confirm">
+						<span class="task-icon-link">${o.icon}</span>
+						<span class="task-link-text">${o.label}</span>
+					</a>
+				</span>
+			</div>
+		`.replace(/[\r\n]+[ \t]*/g, '');
+
 		$('#side-panel #tasks').each(function(){
 			var nel;
 
 			nel = document.createElement('div');
-			nel.innerHTML = '<div class="task">'
-				+'<a class="task-icon-link" href="'+jobBaseUrl+'lastBuild/console">'
-					+'<img style="width: 24px; height: 24px; width: 24px; height: 24px; margin: 2px;" src="/plugin/extra-columns/images/32x32/terminal.png">'
-				+'</a>&nbsp;'
-				+'<a class="task-link" href="'+jobBaseUrl+'lastBuild/console">Ostatni/bieżący log</a>'
-			+'</div>';
+			nel.innerHTML = tpl({
+				href: `${jobBaseUrl}lastBuild/console`,
+				icon: `<svg class="icon-terminal icon-md" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><title></title><rect x="32" y="48" width="448" height="416" rx="48" ry="48" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"></rect><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M96 112l80 64-80 64M192 240h64"></path></svg>`,
+				label: `Last/current log`,
+			});
 			this.appendChild(nel);
 
 
 			nel = document.createElement('div');
-			nel.innerHTML = '<div class="task">'
-				+'<a class="task-icon-link" href="'+jobBaseUrl+'buildTimeTrend">'
-					+'<img style="width: 24px; height: 24px; width: 24px; height: 24px; margin: 2px;" src="/jenkins-theme/images/time-trend.svg">'
-				+'</a>&nbsp;'
-				+'<a class="task-link" href="'+jobBaseUrl+'buildTimeTrend">Czas budowania</a>'
-			+'</div>';
+			nel.innerHTML = tpl({
+				href: `${jobBaseUrl}buildTimeTrend`,
+				// icon:  '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="63" height="63" viewBox="0 0 16.6 16.6"><g><circle cx="8.3" cy="8.3" r="7.6" fill="none" stroke="#000" stroke-width="1.4" /><path fill="#acacac" d="M8.3 2.4v6h6a6 6 0 0 0-6-6 6 6 0 0 0-.1 0z" /><circle cx="8.3" cy="8.3" r=".9" /><path fill="none" stroke="#000" stroke-linecap="round" stroke-width=".6" d="M8.3 2.4v6h6" /></g></svg>',
+				icon:  '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="63" height="63" viewBox="0 0 16.6 16.6"><g><circle cx="8.3" cy="8.3" r="7.6" fill="none" stroke="#000" stroke-width=".8" /><path d="M8.3 2.4v6h6a6 6 0 0 0-6-6 6 6 0 0 0-.1 0z" fill="#ccc" /><circle cx="8.3" cy="8.3" r="1.1" /><path fill="none" stroke="#000" stroke-linecap="round" d="M8.3 2.4v6h6" stroke-width=".8" /></g></svg>',
+				label: `Time trend`,
+			});
 			this.appendChild(nel);
 		});
 	}
@@ -526,72 +536,3 @@ $(function(){ViewFilter.init()});
 
 })(jQueryMini);
 // view-filter.js, EOF
-// jenkins-init.js, line#0
-/**
- * Init EditArea for each shell textarea.
- *
- * @author Maciej "Nux" Jaros
- * Licensed under (at ones choosing)
- * <li>MIT License: http:
- * <li>or CC-BY: http:
- */
-(function(){
-	var jenkinsThemeBaseUrl = "/jenkins-theme/";	// YMMV - set this to whatever your "theme" files are
-
-	if (!('querySelectorAll' in document)) {
-		console.warn('[EditAreaInit] Browser not supported!');
-		return;
-	}
-	loadScript(jenkinsThemeBaseUrl + 'editarea/edit_area_full.js', initAreas);
-// EOC
-	function loadScript(url, onLoad) {
-		var script = document.createElement('script');
-		var head = document.getElementsByTagName('head')[0];
-		script.setAttribute('src', url);
-		head.appendChild(script);
-
-		var intervaId = setInterval(function(){
-			if (typeof(editAreaLoader) != 'undefined') {
-				clearInterval(intervaId);
-
-				setTimeout(function(){
-					onLoad();
-				}, 100);
-			}
-		}, 200);
-	}
-// EOC
-	function initAreas() {
-		var userLanguage = navigator.language;
-// EOC
-		var enhanceUs = document.querySelectorAll(
-			'textarea[name="_.execCommand"].ssh-exec-control'
-			+ ',div[descriptorid="hudson.tasks.Shell"] textarea[name="command"]'
-		);
-		for (var i=0; i < enhanceUs.length; i++) {
-			var textarea = enhanceUs[i];
-			if (textarea.id.length < 1) {
-				textarea.id = "enhanceUs_" + i;
-			}
-
-			editAreaLoader.init({
-				id: textarea.id
-				,start_highlight: true
-				,allow_resize: "both"
-				,allow_toggle: true
-				,display: "later"
-				,word_wrap: true
-				,min_width: 600
-				,min_height: 300
-				,language: userLanguage
-				,syntax: "bash"
-				,change_callback:'editAreaJenkinsAutoUpdate'
-			});
-		}
-	}
-// EOC
-	window.editAreaJenkinsAutoUpdate = function (tid) {
-		document.getElementById(tid).value = editAreaLoader.getValue(tid);
-	};
-})();
-// jenkins-init.js, EOF
