@@ -1,20 +1,19 @@
-Building a theme package
-==============================
+Building a Theme Package
+========================
 
-If you just just change individual JS and CSS, then you are probably only interested in *Packaging*.
+If you plan to change individual JavaScript (JS) and CSS files, you'll likely be most interested in the *Packaging* section.
 
-Most of the other stuff in this document provides an overview of the build configuration file for developers (*Configuration Structure*). The configuration file is used to define and manage the build process for web assets, including JavaScript and CSS files.
+Most of this document gives an overview of the build configuration file for developers (*Configuration Structure*). It's used to define and manage the build process for web assets, including JavaScript and CSS files.
 
-
-The section *Additional considerations* has some notes about PHP versions and copying of extra files.
+The *Additional Considerations* section includes notes about PHP versions and the copying of extra files.
 
 ## Packaging
 
-Scripts can be used individually, but you'll probably want to build a package for easier configuration.
+While scripts can be used individually, building a package is often more convenient for configuration.
 
-The build script is in `theme\_packaging` and it's output is `theme\_build`.
+The build script is located in `theme/_packaging`, and its output is in `theme/_build`.
 
-Execute `_packaging\packaging.php` via PHP to prepare all theme files.
+To prepare all theme files, execute `_packaging/packaging.php` via PHP.
 
 ## Configuration Structure
 
@@ -51,8 +50,8 @@ Note that the special character `*` is used to include all immediate files in a 
 
 This example defines a JavaScript package named `theme`, which includes all JavaScript files directly under `nux-js/lib` and `nux-js`. The built file will be named `theme.js` and placed in the `_build/` directory.
 
-## Additional considerations
+## Additional Considerations
 
-Some files are copied directly in the packaging script. The `packaging.php` file should be pretty straight forward.
+Some files are directly copied in the packaging script, so you might need to check that out too (not only `config.php`). The `packaging.php` file should be straightforward though.
 
-Note that the script was created quite a long time ago and it should work as far back as in PHP5, but it is also quite simple and should work in PHP7 and PHP8 (and probably in future versions).
+Note that this script was created a long time ago and so it should still work with PHP 5. However, it is also quite simple and should be compatible with PHP 7, PHP 8, and likely future PHP versions.
