@@ -1,5 +1,5 @@
 /**
- * Init EditArea for each shell textarea.
+ * Init EditArea for each known textarea.
  *
  * @author Maciej "Nux" Jaros
  * Licensed under (at ones choosing)
@@ -10,11 +10,49 @@
 	// /userContent/nux-js/theme.js
 	var jenkinsThemeBaseUrl = "/userContent/nux-js/";	// YMMV - set this to whatever your "theme" files are
 
+	var logTag = '[DolivetEditArea]';
+
+	var lastId = 0;
+	var enhanceName = 'js-ux-DolivetEditArea';
+	var inputSelector = 'textarea.jenkins-input:not(.codemirror)';
+	var userLanguage = navigator.language;
+
+	// viablity check
 	if (!('querySelectorAll' in document)) {
-		console.warn('[EditAreaInit] Browser not supported!');
+		console.warn(logTag, 'Browser not supported!');
 		return;
 	}
+	var isConfigPage = location.pathname.search(/job\/.+\/configure/) >= 0;
+	if (!isConfigPage) {
+		return;
+	}
+
+	// load extra
 	loadScript(jenkinsThemeBaseUrl + 'editarea/edit_area_full.js', initAreas);
+
+	/**
+	 * Go through sections.
+	 */
+	function initAreas() {
+		var sections = [...document.querySelectorAll('.jenkins-form-item [descriptorid]')];
+		var total = 0;
+		var done = [];
+		for (var section of sections) {
+			var descriptorid = section.getAttribute('descriptorid');
+			var inputs = section.querySelectorAll(inputSelector);
+			if (!inputs.length) {
+				continue;
+			}
+			var highlighter = getHighlighter(descriptorid);
+			if (highlighter) {
+				var {count} = initSection(inputs, highlighter);
+				total += count;
+				done.push(descriptorid);
+			}
+		}
+		var descriptors = [...new Set(done)].join(', ');
+		console.log(logTag, `initialized: [${total}] ${descriptors}.`);
+	}
 
 	/**
 	 * Load script.
@@ -39,25 +77,34 @@
 		}, 200);
 	}
 
-	var lastId = 0;
-	var enhanceName = 'js-ux-DolivetEditArea';
-	var inputSelector = 'textarea.jenkins-input:not(.codemirror)';
-	
 	/** Check if the input was already enhanced in any known way. */
 	function alreadyDone(textarea) {
 		return (textarea.classList.contains(enhanceName) || textarea.classList.contains('codemirror') );
 	}
 
+	/** Highlighter check. */
+	function getHighlighter(descriptorid) {
+		var highlighter = '';
+		if (descriptorid === "hudson.plugins.groovy.SystemGroovy") {
+			highlighter = 'java';
+		} else if (descriptorid === "jenkins.plugins.publish_over_ssh.BapSshBuilderPlugin") {
+			highlighter = 'bash';
+		}
+		if (!highlighter.length) {
+			return false;
+		}
+		return highlighter;
+	}
+
 	/**
 	 * Init all recognized textareas.
 	 */
-	function initAreas() {
-		var userLanguage = navigator.language;
-		var enhanceUs = document.querySelectorAll(inputSelector);
-		for (var i=0; i < enhanceUs.length; i++) {
-			var textarea = enhanceUs[i];
+	function initSection(inputs, highlighter) {
+		var count = 0;
+
+		for (var textarea of inputs) {
 			if (alreadyDone(textarea)) {
-				console.log('already done: ', textarea.id);
+				console.log(logTag, 'already done: ', textarea.id);
 				continue;
 			}
 			textarea.classList.add(enhanceName);
@@ -66,12 +113,8 @@
 				lastId++;
 				textarea.id = enhanceName + '-i' + lastId;
 			}
-			var highlighter = 'bash';
-			if (textarea.classList.contains('groovy')) {
-				highlighter = 'java';
-			}
-			console.log('highlighter:', highlighter);
 			// initialisation
+			count++;
 			editAreaLoader.init({
 				id: textarea.id
 				,start_highlight: true
@@ -86,6 +129,8 @@
 				,change_callback:'editAreaJenkinsAutoUpdate'
 			});
 		}
+		
+		return {count};
 	}
 
 	/**
