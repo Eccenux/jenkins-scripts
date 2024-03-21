@@ -5,10 +5,10 @@ Note that in Jenkins v2 some elements are enhanced by the CodeMirror. This inclu
 - Plain Groovy command (not system groovy).
 
 Not supported by Jenkins-CodeMirror:
-- Execute NodeJS script
+- ✅ Execute system Groovy script
+- ✅ Send files or execute commands over SSH
+- ✅ Execute NodeJS script
 - Execute Windows batch command
-- Execute system Groovy script
-- Send files or execute commands over SSH
 
 ## Structure
 
