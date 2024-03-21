@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Jenkins loader test</title>
+	<title>Jenkins loader test and auto-id</title>
 	<script>
 	(function(){
 		var script = document.createElement('script');
@@ -25,13 +25,22 @@
 			console.log(document.getElementById(tid).value);
 			document.getElementById(tid).value = editAreaLoader.getValue(tid);
 		};
+		var lastId = 0;
+		var enhanceName = 'js-ux-DolivetEditArea';
 		function initAreas() {
 			var userLanguage = navigator.language;
 			var enhanceUs = document.getElementsByTagName('textarea');
 			for (var i=0; i < enhanceUs.length; i++) {
 				var textarea = enhanceUs[i];
+				if (textarea.classList.contains(enhanceName)) {
+					console.log('already done: ', textarea.id);
+					continue;
+				}
+				textarea.classList.add(enhanceName);
+				// custom id
 				if (textarea.id.length < 1) {
-					textarea.id = "enhanceUs_" + i;
+					lastId++;
+					textarea.id = enhanceName + '-i' + lastId;
 				}
 				// initialisation
 				editAreaLoader.init({
