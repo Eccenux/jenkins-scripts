@@ -44,11 +44,6 @@
 	 */
 	function initAreas() {
 		var userLanguage = navigator.language;
-		/*
-			SSH: <textarea name="_.execCommand" class="setting-input validated ssh-exec-control" checkurl="/job/.../descriptorByName/jenkins.plugins.publish_over_ssh.BapSshTransfer/checkExecCommand" rows="9">
-			Windows: <textarea name="command" class="setting-input   fixed-width" rows="5"></textarea>
-			Linux: div descriptorid="hudson.tasks.Shell" <textarea name="command" class="setting-input fixed-width" rows="5"></textarea>
-		*/
 		var enhanceUs = document.querySelectorAll(
 			'textarea[name="_.execCommand"].ssh-exec-control'
 			+ ',div[descriptorid="hudson.tasks.Shell"] textarea[name="command"]'
