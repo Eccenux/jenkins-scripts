@@ -19,7 +19,7 @@ How to make collapsible groups?
 
 ### Step 1. Start a group ###
 
-To start a group add a "Choice" parameter named `group-start` with following options (you can just add one of the options):
+To start a group add a "Choice" parameter named `group-start` (or `group-start_<0-9>`) with following options (you can just add one of the options):
 
   * `collapsible` - if option is given then it will be possible to close the group with a button.
   * `collapsed` - if option is given the group will be closed by default.
@@ -33,5 +33,6 @@ If you use `checkboxTrigger-SomeCheckboxParameterName` then you should add a che
 
 ### Step 3. End a group ###
 
-Group continues until the end of params or next group start box.
-To end a group before the end of params add a "Choice" parameter named `group-start` with option "-".
+Group continues until the end of parameters or next group start box.
+To end a group before the end of parameters add a "Choice" parameter named `group-start` with option "-". 
+You can also use `group-end` or `group-end_<0-9>`.

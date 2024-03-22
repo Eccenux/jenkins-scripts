@@ -214,13 +214,7 @@ jQueryMini.on = function(element, eventName, onEvent) {
 /**
 	Grouping parametrs.
 
-	On configuration page add group start box which is a Choice parameter named "group-start" with following options:
-	<li>collapsible - if option is given then it will be possible to close the group with a button.
-	<li>collapsed - if option is given the group will be closed by default.
-	<li>checkboxTrigger-SomeCheckboxParameterName - if option is given group will be closed when checkbox is unchecked (and shown otherwise).
-
-	Group continues until the end of params or next group start box.
-	To end a group before the end of params add "group-start" with option "-".
+	See docs in: README.param-groups.md
 
 	@todo Specify and show title.
 	@todo Add show/hide button (for non checkbox triggered groups).
@@ -237,6 +231,8 @@ jQueryMini.on = function(element, eventName, onEvent) {
 
 	var controller = new Controller();
 	controller.init();
+
+	var logTag = '[param-groups]';
 // EOC
 	function Parameter(parameterBody) {
 // EOC
@@ -244,11 +240,11 @@ jQueryMini.on = function(element, eventName, onEvent) {
 			this.body = parameterBody;
 			this.originalDisplay = parameterBody.style.display;
 			try {
-				this.name = "" + parameterBody.querySelector(".setting-name").textContent;
+				this.name = "" + parameterBody.querySelector(".setting-main > div > input[name=name]").textContent;
 			}
 			catch(e) {
 				this.name = null;
-				console.log("Name not found");
+				console.log(logTag, "Name not found");
 			}
 
 		};
@@ -316,7 +312,7 @@ jQueryMini.on = function(element, eventName, onEvent) {
 		};
 // EOC
 		this.checkIfMine = function(parameter) {
-			if (parameter.name == 'group-start') {
+			if (/^group-(start|end)(_[0-9]+)?$/.test(parameter.name)) {
 				return false;
 			}
 
@@ -353,7 +349,11 @@ jQueryMini.on = function(element, eventName, onEvent) {
 				for (var i = 0; i < this.parameters.length; i++) {
 // EOC
 					var parameter = this.parameters[i];
-					parameter.body.querySelector(".setting-name").style.color = '#555';
+					try {
+						parameter.body.querySelector(".setting-name").style.color = '#555';
+					} catch(e) {
+						console.log(logTag, "Unable to set initial color", parameter, e);
+					}
 				}
 			}
 		};
@@ -392,7 +392,7 @@ jQueryMini.on = function(element, eventName, onEvent) {
 		};
 // EOC
 		this.parseParameters = function() {
-			var parameterBodies = document.querySelectorAll("table.parameters > tbody");
+			var parameterBodies = document.querySelectorAll(".parameters > .jenkins-form-item");
 			var parameters = [];
 			for (var i = 0; i < parameterBodies.length; i++) {
 				var parameterBody = parameterBodies[i];
