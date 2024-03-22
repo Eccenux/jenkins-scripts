@@ -8,6 +8,7 @@
 		"plaintext"
 	],
 	"search.exclude": {
-		"**/_build": true
+		"**/_build": true,
+		"package-lock.json": true,
 	}
 }

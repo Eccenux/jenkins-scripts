@@ -1,0 +1,12 @@
+{
+	"name": "jenkins-enhancement-scripts",
+	"type": "commonjs",
+	"scripts": {
+		"x-test": "mocha",
+		"x-build-js": "browserify src/main.js -o dist/yourGadgetName.js",
+		"x-build": "npm run build-js && node -e \"console.log('Build done');\" "
+	},
+	"devDependencies": {
+		"eslint": "8.x"
+	}
+}

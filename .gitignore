@@ -1,2 +1,6 @@
-/theme/nbproject/private/
+/node_modules
 *.lnk
+*.priv.*
+*.priv
+/theme/nbproject/private/
+package-lock.json
