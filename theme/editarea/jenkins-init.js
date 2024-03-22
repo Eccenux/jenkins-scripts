@@ -1,3 +1,5 @@
+/* global editAreaLoader */
+
 /**
  * Init EditArea for each known textarea.
  *
@@ -46,11 +48,12 @@
 			},
 		});
 		// see also: getHighlighter
-		var behaviour = behaviourGen('java', "hudson.plugins.groovy.SystemGroovy");
+		let behaviour;
+		behaviour = behaviourGen('java', "hudson.plugins.groovy.SystemGroovy");
 		Behaviour.specify(behaviour.selector, behaviour.id, behaviour.priority, behaviour.fun);
-		var behaviour = behaviourGen('bash', "jenkins.plugins.publish_over_ssh.BapSshBuilderPlugin");
+		behaviour = behaviourGen('bash', "jenkins.plugins.publish_over_ssh.BapSshBuilderPlugin");
 		Behaviour.specify(behaviour.selector, behaviour.id, behaviour.priority, behaviour.fun);
-		var behaviour = behaviourGen('js', "jenkins.plugins.nodejs.NodeJSCommandInterpreter");
+		behaviour = behaviourGen('js', "jenkins.plugins.nodejs.NodeJSCommandInterpreter");
 		Behaviour.specify(behaviour.selector, behaviour.id, behaviour.priority, behaviour.fun);
 
 		var sections = [...document.querySelectorAll('.jenkins-form-item [descriptorid]')];
