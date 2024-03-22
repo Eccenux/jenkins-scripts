@@ -22,30 +22,47 @@
 	var logTag = '[param-groups]';
 
 	/**
-	 * Parameter container.
-	 *
-	 * @param {Node} parameterBody Body of the parameter.
-	 * @returns {Parameter}
+	 * Parameter helper.
 	 */
-	function Parameter(parameterBody) {
+	class Parameter {
 		/**
-		 * @param {Node} parameterBody
+		 * @param {Element} parameterBody Body of the parameter.
 		 */
-		this.constructor = function(parameterBody) {
+		constructor(parameterBody) {
+			/**
+			 * Parent tag for the parameter (container).
+			 * @type {Element}
+			 */
 			this.body = parameterBody;
+			/**
+			 * Display type for showing elements.
+			 * @type {String}
+			 */
 			this.originalDisplay = parameterBody.style.display;
+			/**
+			 * Name of the parameter (as given in Jenkins configuration).
+			 * @type {String}
+			 */
+			this.name = '';
+
+			/**
+			 * Was this parsed correctly.
+			 */
+			this.valid = false;
+
+			// setup name
 			try {
-				this.name = "" + parameterBody.querySelector(".setting-main > div > input[name=name]").textContent;
+				this.name = "" + parameterBody.querySelector("input[name=name]").value;
 			}
 			catch(e) {
-				this.name = null;
-				console.log(logTag, "Name not found");
+				console.warn(logTag, "Input not found?", e);
 			}
-			
-		};
-		
-		// constructor call
-		this.constructor(parameterBody);
+			if (!this.name.length) {
+				console.warn(logTag, "Name not found", parameterBody);
+			} else {
+				this.valid = true;
+			}
+		}
 	}
 
 	/**
@@ -183,10 +200,8 @@
 				for (var i = 0; i < this.parameters.length; i++) {
 					/** @type Parameter */
 					var parameter = this.parameters[i];
-					try {
-						parameter.body.querySelector(".setting-name").style.color = '#555';
-					} catch(e) {
-						console.log(logTag, "Unable to set initial color", parameter, e);
+					if (parameter.valid) {
+						parameter.body.classList.add('par-gr-hideable-item');
 					}
 				}
 			}
@@ -206,10 +221,10 @@
 			var _self = this;
 			addEventListener("load", function () {
 				var parameters = _self.parseParameters();
-				console.log(parameters);
+				// console.log(parameters);
 
 				var groups = _self.groupParameters(parameters);
-				console.log(groups);
+				// console.log(groups);
 
 				for (var i = 0; i < groups.length; i++) {
 					groups[i].setInitalState();
@@ -245,7 +260,7 @@
 			for (var i = 0; i < parameterBodies.length; i++) {
 				var parameterBody = parameterBodies[i];
 				var parameter = new Parameter(parameterBody);
-				if (parameter.name != null) {
+				if (parameter.valid) {
 					parameters.push(parameter);
 				}
 			}

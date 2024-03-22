@@ -12,3 +12,9 @@
 	white-space: normal;
 }
 /*main.css, EOF*/
+/*parameter-grouping.css, line#0*/
+.par-gr-hideable-item {
+	border-left: 2px solid cadetblue;
+	padding-left: 1em;
+}
+/*parameter-grouping.css, EOF*/

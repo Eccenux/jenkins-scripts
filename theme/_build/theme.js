@@ -234,23 +234,31 @@ jQueryMini.on = function(element, eventName, onEvent) {
 
 	var logTag = '[param-groups]';
 // EOC
-	function Parameter(parameterBody) {
+	class Parameter {
 // EOC
-		this.constructor = function(parameterBody) {
+		constructor(parameterBody) {
+// EOC
 			this.body = parameterBody;
+// EOC
 			this.originalDisplay = parameterBody.style.display;
+// EOC
+			this.name = '';
+// EOC
+			this.valid = false;
+
+
 			try {
-				this.name = "" + parameterBody.querySelector(".setting-main > div > input[name=name]").textContent;
+				this.name = "" + parameterBody.querySelector("input[name=name]").value;
 			}
 			catch(e) {
-				this.name = null;
-				console.log(logTag, "Name not found");
+				console.warn(logTag, "Input not found?", e);
 			}
-
-		};
-
-
-		this.constructor(parameterBody);
+			if (!this.name.length) {
+				console.warn(logTag, "Name not found", parameterBody);
+			} else {
+				this.valid = true;
+			}
+		}
 	}
 // EOC
 	function Group(parameterBody) {
@@ -349,10 +357,8 @@ jQueryMini.on = function(element, eventName, onEvent) {
 				for (var i = 0; i < this.parameters.length; i++) {
 // EOC
 					var parameter = this.parameters[i];
-					try {
-						parameter.body.querySelector(".setting-name").style.color = '#555';
-					} catch(e) {
-						console.log(logTag, "Unable to set initial color", parameter, e);
+					if (parameter.valid) {
+						parameter.body.classList.add('par-gr-hideable-item');
 					}
 				}
 			}
@@ -367,10 +373,10 @@ jQueryMini.on = function(element, eventName, onEvent) {
 			var _self = this;
 			addEventListener("load", function () {
 				var parameters = _self.parseParameters();
-				console.log(parameters);
+
 
 				var groups = _self.groupParameters(parameters);
-				console.log(groups);
+
 
 				for (var i = 0; i < groups.length; i++) {
 					groups[i].setInitalState();
@@ -397,7 +403,7 @@ jQueryMini.on = function(element, eventName, onEvent) {
 			for (var i = 0; i < parameterBodies.length; i++) {
 				var parameterBody = parameterBodies[i];
 				var parameter = new Parameter(parameterBody);
-				if (parameter.name != null) {
+				if (parameter.valid) {
 					parameters.push(parameter);
 				}
 			}
