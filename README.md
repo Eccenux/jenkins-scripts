@@ -3,7 +3,7 @@ Jenkins Enhancements
 
 Jenkins JavaScript enhancements package.
 
-Any changes since year 2024 should be considered compatible with Jenkins v2.
+Any changes since year 2024 should be considered compatible with Jenkins v2 (previous versions where compatible with Jenkins v1).
 
 If you want to use my build just copy `theme\_build\*` to `jenkins-data\userContent\nux-js`. You could also use individual scripts.
 
@@ -42,7 +42,7 @@ Adds a simple filter input for views. Allows quick job filtering searching by wo
 
 Main file: `editarea/jenkins-init.js`.
 
-Integrates [EditArea](http://www.cdolivet.com/editarea/) syntax highlighting engine to enhance Linux shell (bash) scripts editing. This includes commands executed through SSH.
+Integrates [Dolivet's EditArea](http://www.cdolivet.com/editarea/) syntax highlighting engine to enhance code editor of: SSH shell (bash), NodeJS and System Groovy steps.
 
 <img align="center" src="https://raw.github.com/Eccenux/jenkins-scripts/master/screen/self-update.png" alt="Self update with syntax highlighting">
 
@@ -50,11 +50,11 @@ Integrates [EditArea](http://www.cdolivet.com/editarea/) syntax highlighting eng
 
 Main file: `editarea/parameter-grouping.js`.
 
-This feature lets you hide or show groups of settings using a checkbox. For instance, if you check a box to turn on tests, it reveals extra settings for testing (which are hidden at first). Or, there's a checkbox for risky options, making sure users know what they're doing before they see these settings.
+This feature allows you to hide or show groups of settings using a checkbox. For instance, if you check a box to turn on tests, it reveals extra settings for testing (which are hidden initially). Another use case involves a checkbox for risky options, adding an extra step to dynamically reveal some options and ensure users are aware of what they're doing.
 
 <img style="max-height:40vh;" src="https://raw.github.com/Eccenux/jenkins-scripts/master/screen/param-group-en-opened.png" alt="Opened group">
 
-More info: [README: param groups](README.param-groups.md).
+More info: [README: parameter groups](README.param-groups.md).
 
 Minor enhancements
 ------------------
