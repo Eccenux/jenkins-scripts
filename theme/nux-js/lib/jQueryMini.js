@@ -50,12 +50,19 @@ jQueryMini.traverseSelector = function(selector) {
  *
  * @param {Function} onReady
  *		Function to run when page elements are ready.
- *		Will receive event object.
+ *		Will receive an event object (if it was executed before the document loaded).
+ *		Will run immediately if the document is already loaded (and will receive {$wasLoaded:true} object).
  */
 jQueryMini.addReadyListener = function(onReady) {
-	document.addEventListener("DOMContentLoaded", function(event) {
-		onReady(event);
-	});
+	// DOM is still loading
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", function(event) {
+			onReady(event);
+		});
+	} else {
+		// DOM is already loaded
+		onReady({$wasLoaded:true});
+	}	
 };
 
 /**

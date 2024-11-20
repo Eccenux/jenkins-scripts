@@ -1,4 +1,237 @@
 
+// ReArray.js, line#0
+
+// EOC
+class ReArray {
+	constructor(strings, regExpFlags, exactMatch) {
+		this._reArray = [];
+
+		var strToRegExp;
+		if (!exactMatch) {
+			strToRegExp = (str) => this.escapeStr4RegExp(str);
+		} else {
+			strToRegExp = (str) => '^'+this.escapeStr4RegExp(str)+'$';
+		}
+
+		for (var i = 0; i < strings.length; i++) {
+			this._reArray.push(new RegExp(strToRegExp(strings[i]), regExpFlags));
+		}
+	}
+// EOC
+	escapeStr4RegExp(str) {
+		return str.replace(/([\[\]\{\}\|\.\*\?\(\)\$\^\\])/g, '\\$1');
+	}
+// EOC
+	test(str, matchAny) {
+		var numMatches = 0;
+		for (var i = 0; i < this._reArray.length; i++) {
+			var re = this._reArray[i];
+			if (re.test(str)) {
+				if (matchAny) {
+					return true;
+				} else {
+					numMatches++;
+				}
+			}
+		}
+		return (numMatches == this._reArray.length);
+	}
+}
+
+// export { ReArray }
+// ReArray.js, EOF
+// ViewFilter.js, line#0
+
+
+
+/**
+ * Adds a simple filter input for any views (widgets).
+ *
+ * @author Maciej "Nux" Jaros
+ *
+ * Basic usage example:
+ * <pre>
+
+	var listFilter = new ViewFilter();
+
+	$(function(){listFilter.init("#filter-controls-container", "#list-container li")});
+ * </pre>
+ *
+ * By default text contents of whol items are matched.
+ * You might wan to re-define `itemToText` to e.g. only use text from header:
+ * <pre>
+
+	var sectionFilter = new ViewFilter();
+
+	sectionFilter.itemToText = function(item) {
+		return item.querySelector('h2').textContent;
+	};
+
+	$(function(){sectionFilter.init("#controls", "section")});
+ * </pre>
+ *
+ * Note! For dynamic items you must call `.preParseItems()` after changing items
+ *
+ * Licensed under (at ones choosing)
+ * <li>MIT License: http:
+ * <li>or CC-BY: http:
+ *
+ * @returns {ViewFilter}
+ */
+class ViewFilter_hashed_a40934580jldhfj084957lhgldf {
+// EOC
+	constructor(controlsSelector, itemsSelector) {
+// EOC
+		this.items = [];
+// EOC
+		this.i18n = {
+			search: 'Search',
+		}
+// EOC
+		this.itemProperty = 'ViewFilter_text';
+// EOC
+		this.allowRegExp = false;
+
+		this.inputPhrase = null;
+// EOC
+		this.minItems = 2;
+
+		this.controlsSelector = controlsSelector;
+		this.itemsSelector = itemsSelector;
+	}
+// EOC
+	itemToText (item) {
+		return item.textContent.trim();
+	};
+// EOC
+	init(controlsSelector, itemsSelector) {
+		this.controlsSelector = controlsSelector;
+		this.itemsSelector = itemsSelector;
+
+		if (this.preParseItems()) {
+			this.initControls();
+		}
+	}
+// EOC
+	preParseItems () {
+
+		this.items = document.querySelectorAll(this.itemsSelector);
+		if (this.items.length < this.minItems) {
+			return false;
+		}
+
+		for (var i = 0; i < this.items.length; i++) {
+			var item = this.items[i];
+			item[this.itemProperty] = this.itemToText(item);
+		}
+		return true;
+	}
+// EOC
+	generateGuid (innerId) {
+		return innerId + '-xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+			var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+			return v.toString(16);
+		});
+	};
+// EOC
+	initControls () {
+
+		var container = document.querySelector(this.controlsSelector);
+
+		if (!container) {
+			return false;
+		}
+
+
+		this.prepareSearchField(container);
+		this.prepareCounter(container);
+		this.prepareRegExpField(container);
+		return true;
+	}
+// EOC
+	prepareSearchField(container) {
+		var _self = this;
+		var inputPhrase = document.createElement("input");
+		inputPhrase.setAttribute("type", "text");
+		inputPhrase.setAttribute("placeholder", this.i18n.search);
+		inputPhrase.addEventListener('keyup', function(event) {
+			_self.filter(this.value);
+		});
+		container.appendChild(inputPhrase);
+		this.inputPhrase = inputPhrase;
+	}
+// EOC
+	prepareRegExpField(container) {
+		var _self = this;
+
+		var idRegExp = this.generateGuid("RegExp");
+		var label = document.createElement("label");
+		label.setAttribute("for", idRegExp);
+		var inputRegExp = document.createElement("input");
+		inputRegExp.setAttribute("type", "checkbox");
+		inputRegExp.id = idRegExp;
+		inputRegExp.addEventListener('click', function() {
+			_self.allowRegExp = this.checked;
+			_self.filter(inputPhrase.value);
+		});
+		label.appendChild(document.createTextNode('RegExp'));
+		container.appendChild(inputRegExp);
+		container.appendChild(label);
+	}
+// EOC
+	prepareCounter(container) {
+		var span = document.createElement("span");
+		this.counterElement = span;
+		container.appendChild(span);
+	}
+// EOC
+	invalidPhraseInfo (info) {
+		this.inputPhrase.setCustomValidity(info);
+	}
+// EOC
+	invalidPhraseClear () {
+		this.inputPhrase.setCustomValidity("");
+	}
+// EOC
+	filter (phrase) {
+
+		var re;
+		if (!this.allowRegExp) {
+
+			var words = phrase
+				.replace(/^\s+/, '')
+				.replace(/\s+$/, '')
+				.replace(/\s+/g, ' ')
+				.split(' ')
+			;
+
+			re = new ReArray(words, 'i');
+		} else {
+			try {
+				re = new RegExp(phrase, 'i');
+			} catch (e) {
+				this.invalidPhraseInfo(e.message);
+				return false;
+			}
+		}
+		this.invalidPhraseClear();
+		var matchCount = 0;
+		for (var i = 0; i < this.items.length; i++) {
+			var item = this.items[i];
+			if (re.test(item[this.itemProperty])) {
+				item.style.display = '';
+				matchCount++;
+			} else {
+				item.style.display = 'none';
+			}
+		}
+		this.counterElement.textContent = ` (${matchCount})`;
+		return true;
+	}
+}
+
+// export { ViewFilter }
+// ViewFilter.js, EOF
 // jQueryMini.js, line#0
 /**
  *	jQuery mini
@@ -40,9 +273,15 @@ jQueryMini.traverseSelector = function(selector) {
 };
 // EOC
 jQueryMini.addReadyListener = function(onReady) {
-	document.addEventListener("DOMContentLoaded", function(event) {
-		onReady(event);
-	});
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", function(event) {
+			onReady(event);
+		});
+	} else {
+
+		onReady({$wasLoaded:true});
+	}
 };
 // EOC
 jQueryMini.on = function(element, eventName, onEvent) {
@@ -415,116 +654,40 @@ jQueryMini.on = function(element, eventName, onEvent) {
 
 // parameter-grouping.js, EOF
 // view-filter.js, line#0
-(function($){
 
-/**
- * Adds a simple filter input for views.
- *
- * $('head').append('<script src="http://localhost/_test/jenkins/nux-js/view-filter.js" />')
- *
- * @author Maciej "Nux" Jaros
- *
- * Licensed under (at ones choosing)
- * <li>MIT License: http:
- * <li>or CC-BY: http:
- *
- * @requires jQueryMini or Actual jQuery.
- * @returns {ViewFilter}
- */
-function ViewFilter()
-{
 // EOC
-	var _self = this;
-
-	var items = [];
 // EOC
-	this.init = function () {
+// EOC
+function setupMainJobFilter($, ViewFilter) {
 
-		var container = document.getElementById("view-message");
-		if (!container) {
-			return;
+	var sectionFilter = new ViewFilter();
+
+	sectionFilter.i18n.search = 'Filter jobs (name, url)';
+
+	sectionFilter.itemToText = function(item) {
+		var text = '';
+		var extraText = '';
+		var links = item.getElementsByClassName('model-link');
+		if (links.length) {
+			text = links[0].textContent;
+			extraText = links[0].getAttribute('href');
 		}
 
-
-		items = $('#projectstatus [id^=job_]');
-		if (items.length < 2) {
-			return;
-		}
-
-		for (var i = 0; i < items.length; i++) {
-			var item = items[i];
-			item.ViewFilter_text = '';
-			item.ViewFilter_extraText = '';
-			var links = item.getElementsByClassName('model-link');
-			if (links.length) {
-				item.ViewFilter_text = links[0].textContent;
-				item.ViewFilter_extraText = links[0].getAttribute('href');
-			}
-		}
-
-
-		var input = document.createElement("input");
-		input.setAttribute("type", "text");
-		input.setAttribute("placeholder", document.getElementById("search-box").getAttribute("placeholder"));
-		$.on(input, 'keyup', function() {
-			_self.filter(this.value);
-		});
-		container.appendChild(input);
+		return text + ' ' + extraText;
 	};
-// EOC
-	this.filter = function (phrase) {
 
-		var words = phrase
-				.replace(/^\s+/, '')
-				.replace(/\s+$/, '')
-				.replace(/\s+/g, ' ')
-				.split(' ')
-		;
 
-		var re = new ReArray(words, 'i');
-		//var re = new RegExp('('+words+')', 'i');
-		for (var i = 0; i < items.length; i++) {
-			var item = items[i];
-			if (re.test(item.ViewFilter_text + ' ' + item.ViewFilter_extraText)) {
-				item.style.display='';
-			} else {
-				item.style.display='none';
-			}
-		}
-	};
-// EOC
-	function ReArray(strings, regExpFlags) {
-		this._reArray = [];
-
-		for (var i=0; i<strings.length; i++) {
-			this._reArray.push(new RegExp(this.escapeStr4RegExp(strings[i]), regExpFlags));
-		}
-	}
-// EOC
-	ReArray.prototype.escapeStr4RegExp = function(str) {
-		return str.replace(/([\[\]\{\}\|\.\*\?\(\)\$\^\\])/g, '\\$1');
-	};
-// EOC
-	ReArray.prototype.test = function(str, matchAny) {
-		var numMatches = 0;
-		for (var i=0; i<this._reArray.length; i++) {
-			var re = this._reArray[i];
-			if (re.test(str)) {
-				if (matchAny) {
-					return true;
-				} else {
-					numMatches++;
-				}
-			}
-		}
-		return (numMatches == this._reArray.length);
-	};
+	$(()=>{
+		sectionFilter.init("#view-message", "#projectstatus [id^=job_]");
+	});
 }
 
-ViewFilter = new ViewFilter();
 
-$(function(){ViewFilter.init()});
+(function($){
 
+	const ViewFilter = ViewFilter_hashed_a40934580jldhfj084957lhgldf;
+
+	setupMainJobFilter($, ViewFilter);
 })(jQueryMini);
 // view-filter.js, EOF
 // jenkins-init.js, line#0
