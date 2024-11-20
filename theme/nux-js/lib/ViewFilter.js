@@ -1,5 +1,6 @@
 // https://gist.github.com/Eccenux/5a72d124f2379d36760c195b07002a6b/
 // import {ReArray} from './ReArray.js';
+/* global ReArray */
 
 /**
  * Adds a simple filter input for any views (widgets).
@@ -35,6 +36,7 @@
  *
  * @returns {ViewFilter}
  */
+// eslint-disable-next-line no-unused-vars
 class ViewFilter_hashed_a40934580jldhfj084957lhgldf {
 	/**
 	 * Note! Parameters are used for backward compatibility.
@@ -83,7 +85,7 @@ class ViewFilter_hashed_a40934580jldhfj084957lhgldf {
 	 */
 	itemToText (item) {
 		return item.textContent.trim();
-	};
+	}
 
 	/**
 	 * Initalize after doc.ready.
@@ -135,7 +137,7 @@ class ViewFilter_hashed_a40934580jldhfj084957lhgldf {
 			var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
 			return v.toString(16);
 		});
-	};
+	}
 
 	/**
 	 * Init controls.
@@ -166,7 +168,7 @@ class ViewFilter_hashed_a40934580jldhfj084957lhgldf {
 		var inputPhrase = document.createElement("input");
 		inputPhrase.setAttribute("type", "text");
 		inputPhrase.setAttribute("placeholder", this.i18n.search);
-		inputPhrase.addEventListener('keyup', function(event) {
+		inputPhrase.addEventListener('keyup', function() {
 			_self.filter(this.value);
 		});
 		container.appendChild(inputPhrase);
@@ -189,7 +191,7 @@ class ViewFilter_hashed_a40934580jldhfj084957lhgldf {
 		inputRegExp.id = idRegExp;
 		inputRegExp.addEventListener('click', function() {
 			_self.allowRegExp = this.checked;
-			_self.filter(inputPhrase.value);
+			_self.filter(_self.inputPhrase.value);
 		});
 		label.appendChild(document.createTextNode('RegExp'));
 		container.appendChild(inputRegExp);
@@ -268,4 +270,4 @@ class ViewFilter_hashed_a40934580jldhfj084957lhgldf {
 	}
 }
 
-// export { ViewFilter }
+// export { ViewFilter:ViewFilter_hashed_a40934580jldhfj084957lhgldf }
