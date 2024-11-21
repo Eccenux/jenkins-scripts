@@ -42,8 +42,7 @@ class ReArray {
 // ReArray.js, EOF
 // ViewFilter.js, line#0
 
-
-
+// EOC
 /**
  * Adds a simple filter input for any views (widgets).
  *
@@ -78,6 +77,7 @@ class ReArray {
  *
  * @returns {ViewFilter}
  */
+
 class ViewFilter_hashed_a40934580jldhfj084957lhgldf {
 // EOC
 	constructor(controlsSelector, itemsSelector) {
@@ -102,7 +102,7 @@ class ViewFilter_hashed_a40934580jldhfj084957lhgldf {
 // EOC
 	itemToText (item) {
 		return item.textContent.trim();
-	};
+	}
 // EOC
 	init(controlsSelector, itemsSelector) {
 		this.controlsSelector = controlsSelector;
@@ -132,15 +132,29 @@ class ViewFilter_hashed_a40934580jldhfj084957lhgldf {
 			var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
 			return v.toString(16);
 		});
-	};
+	}
 // EOC
 	initControls () {
 
-		var container = document.querySelector(this.controlsSelector);
-
-		if (!container) {
+		let parent = document.querySelector(this.controlsSelector);
+		if (!parent) {
 			return false;
 		}
+
+		this.addCss();
+
+
+		const className = 'view-filter-controls';
+		let allContainer = parent.querySelector('.' + className);
+		if (!allContainer) {
+			allContainer = document.createElement('div');
+			allContainer.className = className;
+			parent.appendChild(allContainer);
+		}
+
+		let container = document.createElement('div');
+		allContainer.appendChild(container);
+		this.filterContainer = container;
 
 
 		this.prepareSearchField(container);
@@ -154,7 +168,8 @@ class ViewFilter_hashed_a40934580jldhfj084957lhgldf {
 		var inputPhrase = document.createElement("input");
 		inputPhrase.setAttribute("type", "text");
 		inputPhrase.setAttribute("placeholder", this.i18n.search);
-		inputPhrase.addEventListener('keyup', function(event) {
+		inputPhrase.setAttribute("title", this.i18n.search);
+		inputPhrase.addEventListener('keyup', function() {
 			_self.filter(this.value);
 		});
 		container.appendChild(inputPhrase);
@@ -172,7 +187,7 @@ class ViewFilter_hashed_a40934580jldhfj084957lhgldf {
 		inputRegExp.id = idRegExp;
 		inputRegExp.addEventListener('click', function() {
 			_self.allowRegExp = this.checked;
-			_self.filter(inputPhrase.value);
+			_self.filter(_self.inputPhrase.value);
 		});
 		label.appendChild(document.createTextNode('RegExp'));
 		container.appendChild(inputRegExp);
@@ -228,9 +243,29 @@ class ViewFilter_hashed_a40934580jldhfj084957lhgldf {
 		this.counterElement.textContent = ` (${matchCount})`;
 		return true;
 	}
+// EOC
+	getCss() {
+		return `
+			.view-filter-controls {
+				display: flex;
+				gap: 1em;
+			}
+		`;
+	}
+// EOC
+	addCss() {
+		const id = 'viewfilter-style-a40934580jldhfj084957lhgldf';
+		if (document.getElementById(id)) {
+			return;
+		}
+		let style = document.createElement('style');
+		style.id = id;
+		style.innerHTML = this.getCss();
+		document.head.appendChild(style);
+	}
 }
 
-// export { ViewFilter }
+// export { ViewFilter:ViewFilter_hashed_a40934580jldhfj084957lhgldf }
 // ViewFilter.js, EOF
 // jQueryMini.js, line#0
 /**
@@ -659,12 +694,12 @@ jQueryMini.on = function(element, eventName, onEvent) {
 // EOC
 // EOC
 function setupMainJobFilter($, ViewFilter) {
+	var filterView = new ViewFilter();
+	filterView.i18n.search = 'Filter jobs (name, url)';
+	filterView.itemProperty = 'ViewFilter_MainJobFilter';
 
-	var sectionFilter = new ViewFilter();
 
-	sectionFilter.i18n.search = 'Filter jobs (name, url)';
-
-	sectionFilter.itemToText = function(item) {
+	filterView.itemToText = function(item) {
 		var text = '';
 		var extraText = '';
 		var links = item.getElementsByClassName('model-link');
@@ -678,16 +713,82 @@ function setupMainJobFilter($, ViewFilter) {
 
 
 	$(()=>{
-		sectionFilter.init("#view-message", "#projectstatus [id^=job_]");
+
+		filterView.init("#view-message", "#projectstatus [id^=job_]");
 	});
+}
+// EOC
+function setupExtraJobFilter($, ViewFilter) {
+	var filterView = new ViewFilter();
+	filterView.i18n.search = 'Extras format - launch:..., desc:..., cron:...';
+	filterView.itemProperty = 'ViewFilter_ExtraJobFilter';
+
+	let columns = false;
+
+	filterView.itemToText = function(item) {
+		if (!columns) {
+			console.warn('columns not found');
+			return item.textContent;
+		}
+		let texts = [];
+
+		let cells = item.querySelectorAll('td');
+		if (cells.length) {
+			if (columns.nextLanuch && cells[columns.nextLanuch]) {
+				texts.push('launch:' + cells[columns.nextLanuch].textContent.trim());
+			}
+			if (columns.buildDesc && cells[columns.buildDesc]) {
+				texts.push('desc:' + cells[columns.buildDesc].textContent.trim());
+			}
+			if (columns.cron && cells[columns.cron]) {
+				texts.push('cron:' + cells[columns.cron].textContent.trim());
+			}
+		}
+
+		return texts.join(' ; ');
+	};
+
+
+	$(()=>{
+		columns = findColumns();
+
+		filterView.init("#view-message", "#projectstatus [id^=job_]");
+	});
+}
+// EOC
+function findColumns() {
+	const jobtable = document.querySelector('.jenkins-table.sortable');
+	if (!jobtable) {
+		return false;
+	}
+
+
+	let head = jobtable.querySelector('thead');
+	let columns = {cron:0, nextLanuch:0, buildDesc:0};
+	head.querySelectorAll('th').forEach((el, i) => {
+		let headText = el.textContent.trim().toLowerCase()
+
+		if (headText.startsWith('cron trig')) {
+			columns.cron = i;
+			console.log('cron', i, el);
+		}
+		else if (headText.startsWith('next launch')) {
+			columns.nextLanuch = i;
+		}
+		else if (headText.startsWith('build desc')) {
+			columns.buildDesc = i;
+		}
+	})
+	return columns;
 }
 
 
-(function($){
+(function ($) {
 
 	const ViewFilter = ViewFilter_hashed_a40934580jldhfj084957lhgldf;
 
 	setupMainJobFilter($, ViewFilter);
+	setupExtraJobFilter($, ViewFilter);
 })(jQueryMini);
 // view-filter.js, EOF
 // jenkins-init.js, line#0

@@ -144,12 +144,26 @@ class ViewFilter_hashed_a40934580jldhfj084957lhgldf {
 	 * @returns {Boolean} false if container was not found
 	 */
 	initControls () {
-		// container for controls
-		var container = document.querySelector(this.controlsSelector);
-
-		if (!container) {
+		// existing, parent container for controls
+		let parent = document.querySelector(this.controlsSelector);
+		if (!parent) {
 			return false;
 		}
+
+		this.addCss();
+
+		// container for all filter controls
+		const className = 'view-filter-controls';
+		let allContainer = parent.querySelector('.' + className);
+		if (!allContainer) {
+			allContainer = document.createElement('div');
+			allContainer.className = className;
+			parent.appendChild(allContainer);
+		}
+		// this filter container
+		let container = document.createElement('div');
+		allContainer.appendChild(container);
+		this.filterContainer = container;
 
 		// prepare elements
 		this.prepareSearchField(container);
@@ -168,6 +182,7 @@ class ViewFilter_hashed_a40934580jldhfj084957lhgldf {
 		var inputPhrase = document.createElement("input");
 		inputPhrase.setAttribute("type", "text");
 		inputPhrase.setAttribute("placeholder", this.i18n.search);
+		inputPhrase.setAttribute("title", this.i18n.search);
 		inputPhrase.addEventListener('keyup', function() {
 			_self.filter(this.value);
 		});
@@ -268,6 +283,28 @@ class ViewFilter_hashed_a40934580jldhfj084957lhgldf {
 		this.counterElement.textContent = ` (${matchCount})`;
 		return true;
 	}
+
+	/** CSS. */
+	getCss() {
+		return `
+			.view-filter-controls {
+				display: flex;
+				gap: 1em;
+			}
+		`;
+	}
+
+	/** Add CSS. */
+	addCss() {
+		const id = 'viewfilter-style-a40934580jldhfj084957lhgldf';
+		if (document.getElementById(id)) {
+			return;
+		}
+		let style = document.createElement('style');
+		style.id = id;
+		style.innerHTML = this.getCss();
+		document.head.appendChild(style);
+	}	
 }
 
 // export { ViewFilter:ViewFilter_hashed_a40934580jldhfj084957lhgldf }
