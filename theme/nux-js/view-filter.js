@@ -77,20 +77,47 @@ function setupExtraJobFilter($, ViewFilter) {
 		// init(controlsSelector, itemsSelector)
 		filterView.init("#view-message", "#projectstatus [id^=job_]");
 		// predefined filter button
-		addLaunchFilterButton(filterView);
+		addExtraFilterButtons(filterView);
 	});
 }
 
-/** Insert button to filter by predfined launch criteria.  */
-function addLaunchFilterButton(filterView) {
+/** Insert buttons to filter by predfined criteria.  */
+function addExtraFilterButtons(filterView) {
+	addLaunchFilterCentury(filterView);
+	addLaunchFilterToday(filterView);
+}
+function addLaunchFilterCentury(filterView) {
+	let label = "Launch filter";
+	let title = "Insert current century as a launch filter";
+	let actionValue = function() {
+		let currentCentury = Math.floor(new Date().getFullYear() / 100);
+		return `launch:${currentCentury}`;
+	};
+	
+	addFilterButton(filterView, label, title, actionValue);
+}
+function getCurrentDayIso() {
+	return new Date().toISOString().split("T")[0];
+}
+function addLaunchFilterToday(filterView) {
+	let label = "Launching today";
+	let title = "Insert current day as a launch filter";
+	let actionValue = function() {
+		return `launch:${getCurrentDayIso()}`;
+	};
+	
+	addFilterButton(filterView, label, title, actionValue);
+}
+/** Insert button to filter by some criteria.  */
+function addFilterButton(filterView, label, title, actionValue) {
 	const button = document.createElement("button");
-	button.textContent = "Launch filter";
+	button.textContent = label;
 	button.style.cssText = 'margin-left: 1ch;';
-	button.setAttribute("title", "Insert current century as 'launch:20'");
+	button.setAttribute("title", title);
 	
 	button.addEventListener('click', function() {
-		let currentCentury = Math.floor(new Date().getFullYear() / 100);
-		filterView.inputPhrase.value = `launch:${currentCentury}`;
+		let newValue = actionValue(this);
+		filterView.inputPhrase.value = newValue;
 		filterView.filter(filterView.inputPhrase.value);
 	});
 	
