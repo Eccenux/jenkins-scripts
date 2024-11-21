@@ -57,8 +57,8 @@ function setupExtraJobFilter($, ViewFilter) {
 
 		let cells = item.querySelectorAll('td');
 		if (cells.length) {
-			if (columns.nextLanuch && cells[columns.nextLanuch]) {
-				texts.push('launch:' + cells[columns.nextLanuch].textContent.trim());
+			if (columns.nextLaunch && cells[columns.nextLaunch]) {
+				texts.push('launch:' + cells[columns.nextLaunch].textContent.trim());
 			}
 			if (columns.buildDesc && cells[columns.buildDesc]) {
 				texts.push('desc:' + cells[columns.buildDesc].textContent.trim());
@@ -76,13 +76,31 @@ function setupExtraJobFilter($, ViewFilter) {
 		columns = findColumns();
 		// init(controlsSelector, itemsSelector)
 		filterView.init("#view-message", "#projectstatus [id^=job_]");
+		// predefined filter button
+		addLaunchFilterButton(filterView);
 	});
+}
+
+/** Insert button to filter by predfined launch criteria.  */
+function addLaunchFilterButton(filterView) {
+	const button = document.createElement("button");
+	button.textContent = "Launch filter";
+	button.style.cssText = 'margin-left: 1ch;';
+	button.setAttribute("title", "Insert current century as 'launch:20'");
+	
+	button.addEventListener('click', function() {
+		let currentCentury = Math.floor(new Date().getFullYear() / 100);
+		filterView.inputPhrase.value = `launch:${currentCentury}`;
+		filterView.filter(filterView.inputPhrase.value);
+	});
+	
+	filterView.filterContainer.appendChild(button);
 }
 
 /**
  * Find indexes of columns by text of headers.
  * @returns {Object} false if no table; otherwise: {columnKey:<int>}.
- * 	Keys: cron, nextLanuch, buildDesc.
+ * 	Keys: cron, nextLaunch, buildDesc.
  */
 function findColumns() {
 	const jobtable = document.querySelector('.jenkins-table.sortable');
@@ -92,7 +110,7 @@ function findColumns() {
 
 	// 
 	let head = jobtable.querySelector('thead');
-	let columns = {cron:0, nextLanuch:0, buildDesc:0};
+	let columns = {cron:0, nextLaunch:0, buildDesc:0};
 	head.querySelectorAll('th').forEach((el, i) => {
 		let headText = el.textContent.trim().toLowerCase()
 		//console.log(i, el)
@@ -101,7 +119,7 @@ function findColumns() {
 			console.log('cron', i, el);
 		}
 		else if (headText.startsWith('next launch')) {
-			columns.nextLanuch = i;
+			columns.nextLaunch = i;
 		}
 		else if (headText.startsWith('build desc')) {
 			columns.buildDesc = i;
