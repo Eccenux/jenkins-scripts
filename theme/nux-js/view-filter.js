@@ -110,6 +110,9 @@ function addLaunchFilterToday(filterView) {
 }
 /** Insert button to filter by some criteria.  */
 function addFilterButton(filterView, label, title, actionValue) {
+	if (!filterView || !filterView.filterContainer || !filterView.filterContainer.appendChild) {
+		return;
+	}
 	const button = document.createElement("button");
 	button.textContent = label;
 	button.style.cssText = 'margin-left: 1ch;';
