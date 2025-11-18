@@ -1,0 +1,34 @@
+/*
+    Build description tweeks.
+*/
+/* Short logs in build desc 
+(width is ~L33t of ".4loGloG") */
+[style="width:99.4106106%"] {
+    /* job views */
+    #projectstatus & {
+        display: none;
+    }
+}
+/* Special info for librarians in dbmove job
+(width is ~L33t of ".4liBRAR") */
+[style="width:99.4116484%"] {
+    /* job views */
+    #projectstatus & {
+        display: none;
+    }
+}
+/* description style in job views */
+#projectstatus {
+    td[style*="width: 100px"] {
+        &, & > * {
+            color: #669;
+        }
+        height: auto !important;
+        min-height: 3em !important;
+        max-height: 5em !important;
+        width: 130px !important;
+        box-sizing: content-box;
+        display: block;
+        overflow: hidden;
+    }
+}
