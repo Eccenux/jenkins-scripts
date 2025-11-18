@@ -1,0 +1,15 @@
+/*
+    Build params separation (on rebuild/build).
+*/
+[data-model-type*="BuildWithParametersAction"],
+.parameters {
+    .jenkins-form-item.tr {
+/*         border: 2px dashed #ddd; */
+        border: 2px solid #ddd;
+        background: whitesmoke;
+        padding: 1em;
+        border-radius: 1em;
+        margin: 0;
+        margin-bottom: 1em;
+    }    
+}

@@ -1,4 +1,38 @@
 
+/*build-desc.css, line#0*/
+
+/*EOC*/
+/*EOC*/
+[style="width:99.4106106%"] {
+/*EOC*/
+    #projectstatus & {
+        display: none;
+    }
+}
+/*EOC*/
+[style="width:99.4116484%"] {
+/*EOC*/
+    #projectstatus & {
+        display: none;
+    }
+}
+/*EOC*/
+#projectstatus {
+    td[style*="width: 100px"] {
+        &, & > * {
+            color: #669;
+        }
+        height: auto !important;
+        min-height: 3em !important;
+        max-height: 5em !important;
+        width: 130px !important;
+        box-sizing: content-box;
+        display: block;
+        overflow: hidden;
+    }
+}
+
+/*build-desc.css, EOF*/
 /*main.css, line#0*/
 
 /*EOC*/
@@ -18,3 +52,19 @@
 	padding-left: 1em;
 }
 /*parameter-grouping.css, EOF*/
+/*params.css, line#0*/
+
+/*EOC*/
+[data-model-type*="BuildWithParametersAction"],
+.parameters {
+    .jenkins-form-item.tr {
+/*EOC*/
+        border: 2px solid #ddd;
+        background: whitesmoke;
+        padding: 1em;
+        border-radius: 1em;
+        margin: 0;
+        margin-bottom: 1em;
+    }
+}
+/*params.css, EOF*/
